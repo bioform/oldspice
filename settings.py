@@ -97,4 +97,4 @@ SERIALIZATION_MODULES = {
     'json': 'wadofstuff.django.serializers.json'
 }
 
-AUTH_PROFILE_MODULE = 'symantec.authuser.UserProfile'
+AUTH_PROFILE_MODULE = 'symantec.authuser.UserProfile1'
