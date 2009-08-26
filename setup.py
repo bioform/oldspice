@@ -4,7 +4,7 @@ __date__ ="$24.08.2009 18:22:51$"
 from setuptools import setup,find_packages
 
 setup (
-  name = 'Symantec',
+  name = 'symantec',
   version = '0.1',
   packages = find_packages(),
 
