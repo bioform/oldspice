@@ -5,7 +5,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    ('Andrey Krasnov', 'andrey.krasnov@bridge-quest.com'),
 )
 
 MANAGERS = ADMINS
@@ -98,3 +98,7 @@ SERIALIZATION_MODULES = {
 }
 
 AUTH_PROFILE_MODULE = 'symantec.authuser.UserProfile'
+
+# Email settings
+EMAIL_HOST = '169.254.13.1'
+EMAIL_PORT = 25
