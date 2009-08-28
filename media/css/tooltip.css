@@ -1,0 +1,11 @@
+span.show-tooltip-text {
+    display: none;
+    position: absolute;
+    font-size: 0.9em;
+    background-image: url(../img/tooltip.png);
+    background-repeat: repeat;
+    padding: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    color: white;
+}
