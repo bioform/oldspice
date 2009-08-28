@@ -1,12 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_list
+
 from symantec.machines.models import Machine
+import symantec.machines.utils.helper as utils
+
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.core import serializers
 from django.core.mail import send_mail
 import threading
+import httplib
+from datetime import datetime
+import sys, os, traceback
 
 @login_required
 def index(request):
@@ -23,7 +29,7 @@ def index(request):
         paginate_by=20, page=page)
 
 def take(request):
-    # Create a machine based on what the user provided
+    # Get a machine based on what the user provided
     machine = Machine.objects.get(id=request.GET.get('id'))
     # Save the entry to the database
     previous_user = machine.user
@@ -38,6 +44,41 @@ def take(request):
     # Serialize the result of the database retrieval to JSON and send an application/json response
     return HttpResponse(serializers.serialize('json', machine_list, indent=2, relations=('user',)),
             mimetype='application/json')
+
+def get_version(request):
+    machine = Machine.objects.get(id=request.GET.get('id'))
+    
+    if (datetime.now() - machine.updated_at).seconds > 30:
+        machine_info = update_ssim_info(machine)
+    else:
+        machine_info = machine.info
+
+    return HttpResponse(machine_info, mimetype='text/html')
+
+def update_ssim_info(machine):
+    print "Try to load SSIM information for", machine.address
+    conn = httplib.HTTPSConnection(machine.address, timeout=10)
+    try:
+        conn.connect()
+        conn.request("GET", "/imr/admin/ssimhistory.jsp")
+        r1 = conn.getresponse()
+        #check another URL
+        if r1.status == 404:
+            conn.close()
+            conn.request("GET", "/imr/config/ssimhistory.jsp")
+            r1 = conn.getresponse()
+        data1 = r1.read()
+        conn.close()
+    except Exception:
+        print "Unexpected error:", sys.exc_info()[0]
+        traceback.print_exc()
+        data1 = ""
+    if len(data1) != 0:
+        machine.info = utils.text(data1)
+        machine.save()
+        return data1
+    return ""
+
 
 
 def notify(machine, user, previous_user):

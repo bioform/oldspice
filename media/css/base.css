@@ -151,7 +151,7 @@ blockquote {
     border-left: 5px solid #ddd;
 }
 
-code, pre {
+code {
     font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
     background: inherit;
     color: #666;
@@ -763,19 +763,16 @@ table#change-history tbody th {
 }
 
 /*-----------------------------*/
-div#result{
-    background-color: #E6E6E6;
-    font-weight: bold;
-    color: #FF0000;
+
+.status {
+    background: transparent url(../img/ajax-loader-circle.gif) center center no-repeat;
 }
 
-p#head{
-    color: #0F35FF
+.status_on {
+    background: transparent url(../img/status_on.gif) center center no-repeat;
 }
 
-input#mes{
-    border-style: solid;
-    border-width: thin;
-    color: #FF0000
+.status_off {
+    background: transparent url(../img/status_off.gif) center center no-repeat;
 }
 
