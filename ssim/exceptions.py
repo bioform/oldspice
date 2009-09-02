@@ -1,0 +1,3 @@
+class DefaultDomainException(Exception):
+    pass
+

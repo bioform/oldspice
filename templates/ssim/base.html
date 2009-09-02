@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- Author's original DTD was XHTML 1.0 Strict -->
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>SSIM administrations</title>
+    <style type="text/css">
+      #header {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 64px;
+        top: 0;
+        background-color: #ccffcc;
+      }
+      #footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 24px;
+        bottom: 0;
+        background-color: #ccffcc;
+      }
+      #mainmenu {
+        position: fixed;
+        left: 0px;
+        width: 150px;
+        top: 64px;
+        bottom: 24px;
+        background-color: #ffffcc;
+        overflow: auto;
+      }
+      #submenu {
+        position: fixed;
+        left: 150px;
+        width: 3px;
+        top: 64px;
+        bottom: 24px;
+        background-color: #ffccff;
+        overflow: hidden;
+      }
+      #content {
+        position: fixed;
+        left: 153px;
+        right: 0px;
+        top: 64px;
+        bottom: 24px;
+        background-color: #ccccff;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">{% block header %}Header (64 pixels high).{% endblock %}</div>
+    <div id="mainmenu">{% block mainmenu %}MainMenu (150 pixels wide).{% endblock %}</div>
+    <div id="submenu"></div>
+    <div id="content">{% block content %}Content.{% endblock %}</div>
+    <div id="footer">{% block footer %}Footer (24 pixels high).{% endblock %}</div>
+  </body>
+</html>

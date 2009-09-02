@@ -64,6 +64,7 @@ def update_ssim_info(machine):
         r1 = conn.getresponse()
         #check another URL
         if r1.status == 404:
+            #print r1.status, r1.reason
             conn.close()
             conn.request("GET", "/imr/config/ssimhistory.jsp")
             r1 = conn.getresponse()

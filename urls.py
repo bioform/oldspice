@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
     (r'^machines/', include('symantec.machines.urls')),
+    (r'^ssim/', include('symantec.ssim.urls')),
     (r'^$', include('symantec.machines.urls')),
     (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'authuser/login.html'}),
     (r'^css/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT+'/css'}),
