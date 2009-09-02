@@ -24,7 +24,7 @@ def index(request):
         page = int(request.GET.get('page', '1'))
     except ValueError:
         page = 1
-
+    
     return object_list(request,queryset=machine_list, template_name='machines/index.html',
         paginate_by=20, page=page)
 
@@ -47,8 +47,9 @@ def take(request):
 
 def get_version(request):
     machine = Machine.objects.get(id=request.GET.get('id'))
-    
-    if (datetime.now() - machine.updated_at).seconds > 30:
+
+    upddate_delta = datetime.now() - machine.updated_at
+    if upddate_delta.seconds > 60*3:
         machine_info = update_ssim_info(machine)
     else:
         machine_info = machine.info
@@ -57,6 +58,7 @@ def get_version(request):
 
 def update_ssim_info(machine):
     print "Try to load SSIM information for", machine.address
+    data1 = ""
     conn = httplib.HTTPSConnection(machine.address, timeout=10)
     try:
         conn.connect()
@@ -71,13 +73,14 @@ def update_ssim_info(machine):
         data1 = r1.read()
         conn.close()
     except Exception:
-        print "Unexpected error:", sys.exc_info()[0]
-        traceback.print_exc()
-        data1 = ""
+        print "Unexpected error while getting SSIM info:", sys.exc_info()[0]
+        #traceback.print_exc()
     if len(data1) != 0:
-        machine.info = utils.text(data1)
-        machine.save()
-        return data1
+        data1 = utils.text(data1)
+
+    machine.info = data1
+    machine.save()
+    return data1
     return ""
 
 

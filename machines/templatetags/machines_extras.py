@@ -9,6 +9,8 @@ def my(item, user):
 
 @register.filter
 def html(text):
+    if text == None:
+        return ""
     return text.replace("\n", "<br/>")
 
 @register.filter

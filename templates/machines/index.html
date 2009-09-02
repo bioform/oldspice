@@ -8,6 +8,9 @@
 
 {% block content %}
 
+{% for item in object_list %}
+------
+{% endfor %}
 <table class="module">
     <caption>Machines List</caption>
     <thead>
@@ -33,14 +36,16 @@
         {% endfor %}
     </tbody>
     <tfoot>
-        <td>
-            <span class="current">
-                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-            </span>
-        </td>
-        <td colspan="5">
-            {% include 'pagination.html' %}
-        </td>
+        <tr>
+            <td>
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+                </span>
+            </td>
+            <td colspan="5">
+                {% include 'pagination.html' %}
+            </td>
+        </tr>
     </tfoot>
 </table>
 
