@@ -2,15 +2,9 @@
 {% load sorting_tags %}
 {% load machines_extras %}
 
-
-
 {% block title %}Machines List{% endblock %}
 
 {% block content %}
-
-{% for item in object_list %}
-------
-{% endfor %}
 <table class="module">
     <caption>Machines List</caption>
     <thead>
@@ -25,9 +19,9 @@
     </thead>
     <tbody>
         {% for item in object_list %}
-        <tr id="item_{{ item.id }}" class="{% cycle 'even' 'odd' %}" title="Updating...<br>{{ item.info|html }}">
+        <tr id="item_{{ item.id }}" class="{% cycle 'even' 'odd' %}">
             <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}">{{item.address}}</td>
-            <td>{{item.name}}</td>
+            <td id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">{{item.name}}</td>
             <td id="item_user_{{ item.id }}">{{item.user.first_name}} {{item.user.last_name}}</td>
             <td>{{ item.location }}</td>
             <td id="status_{{ item.id }}" class="status">&nbsp;</td>
@@ -61,12 +55,14 @@ var take = function(message) {
         $.getJSON("/machines/take/",data,
             function(data){
                 $.each(data, function(i,item){
-                    var item_user = "#item_user_"+item.pk;
-                    var item_address = "#item_address_"+item.pk;
-                    var take_td = "#take_"+item.pk;
-                    $(item_address).attr('class', 'my');
-                    $(take_td).attr('class', 'no_take');
-                    $(item_user).text(item.fields.user.fields.first_name + " " + item.fields.user.fields.last_name);
+                    if( item.pk == message ){
+                        var item_user = "#item_user_"+item.pk;
+                        var item_address = "#item_address_"+item.pk;
+                        var take_td = "#take_"+item.pk;
+                        $(item_address).attr('class', 'my');
+                        $(take_td).attr('class', 'no_take');
+                        $(item_user).text(item.fields.user.fields.first_name + " " + item.fields.user.fields.last_name);
+                    }
                 });
             }
         );
@@ -85,7 +81,7 @@ var load_version = function(machine_id){
         $.get("/machines/version/",data,
             function(data){
                 var item_status = $("#status_"+machine_id);
-                var tooltip = $("#item_"+machine_id).next('.show-tooltip-text');
+                var tooltip = $("#item_name_"+machine_id).next('.show-tooltip-text');
                 if (tooltip.attr('class') != 'show-tooltip-text')
                         return false;
                 if( data.length > 0 ){

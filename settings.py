@@ -1,5 +1,11 @@
 # Django settings for symantec project.
 import os.path
+import logging
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = '%(asctime)s %(levelname)s %(message)s',
+)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -94,7 +100,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 SERIALIZATION_MODULES = {
-    'json': 'wadofstuff.django.serializers.json'
+    'json': 'symantec.wadofstuff.django.serializers.json'
 }
 
 AUTH_PROFILE_MODULE = 'symantec.authuser.UserProfile'

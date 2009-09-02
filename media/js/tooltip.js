@@ -4,7 +4,7 @@ ShowTooltip = function(e)
 	if (text.attr('class') != 'show-tooltip-text')
 		return false;
 
-	text.fadeIn()
+	text.show()
 		.css('top', e.pageY)
 		.css('left', e.pageX+10);
 
@@ -16,12 +16,12 @@ HideTooltip = function(e)
 	if (text.attr('class') != 'show-tooltip-text')
 		return false;
 
-	text.fadeOut();
+	text.hide();
 }
 
 SetupTooltips = function()
 {
-	$('.show-tooltip,.even,.odd')
+	$('.show-tooltip')
 		.each(function(){
 			$(this)
 				.after($('<span/>')

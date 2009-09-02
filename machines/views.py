@@ -13,6 +13,7 @@ import threading
 import httplib
 from datetime import datetime
 import sys, os, traceback
+import logging
 
 @login_required
 def index(request):

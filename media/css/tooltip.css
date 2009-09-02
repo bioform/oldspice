@@ -9,3 +9,7 @@ span.show-tooltip-text {
     padding-right: 6px;
     color: white;
 }
+
+.show-tooltip {
+    cursor:help;
+}
