@@ -8,6 +8,7 @@ span.show-tooltip-text {
     padding-left: 6px;
     padding-right: 6px;
     color: white;
+    white-space:nowrap;
 }
 
 .show-tooltip {
