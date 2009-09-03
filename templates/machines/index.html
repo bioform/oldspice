@@ -21,7 +21,7 @@
     <tbody>
         {% for item in object_list %}
         <tr id="item_{{ item.id }}" class="{% cycle 'even' 'odd' %}">
-            <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}">{{item.address}}</td>
+            <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}"><a href="https://{{item.address}}/" target="_blank">{{item.address}}</a></td>
             <td>
                 <span id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">
                 {{item.name}}
