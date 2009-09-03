@@ -77,7 +77,9 @@ def update_ssim_info(machine):
         print "Unexpected error while getting SSIM info:", sys.exc_info()[0]
         #traceback.print_exc()
     if len(data1) != 0:
-        data1 = utils.text(data1)
+        data1 = utils.text(data1).replace("\n\n", "\n")
+        machine.os_name = data1.splitlines()[0].replace("*", "").strip()
+        print "OS >>>",machine.os_name,"<<<"
 
     machine.info = data1
     machine.save()

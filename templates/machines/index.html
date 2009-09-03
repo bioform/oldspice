@@ -12,7 +12,8 @@
             <th>{% anchor address Address %}</th><!-- This is a TH tag with a link inside it -->
             <th>{% anchor name %}</th>
             <th>{% anchor user__username User%}</th>
-            <th>{% anchor location%}</th>
+            <th>{% anchor location %}</th>
+            <th>{% anchor os_name OS %}</th>
             <th>SSIM</th>
             <th>&nbsp;</th>
         </tr>
@@ -21,9 +22,14 @@
         {% for item in object_list %}
         <tr id="item_{{ item.id }}" class="{% cycle 'even' 'odd' %}">
             <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}">{{item.address}}</td>
-            <td id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">{{item.name}}</td>
+            <td>
+                <span id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">
+                {{item.name}}
+                </span>
+            </td>
             <td id="item_user_{{ item.id }}">{{item.user.first_name}} {{item.user.last_name}}</td>
             <td>{{ item.location }}</td>
+            <td id="item_os_{{ item.id }}">{{ item.os_name }}</td>
             <td id="status_{{ item.id }}" class="status">&nbsp;</td>
             <td id="take_{{ item.id }}" onclick="take('{{ item.id }}')" class="{{ item|take:user }}">&nbsp;</td>
         </tr>
@@ -36,7 +42,7 @@
                     Page {{ page_obj.number }} of {{ paginator.num_pages }}.
                 </span>
             </td>
-            <td colspan="5">
+            <td colspan="6">
                 {% include 'pagination.html' %}
             </td>
         </tr>
@@ -81,11 +87,14 @@ var load_version = function(machine_id){
         $.get("/machines/version/",data,
             function(data){
                 var item_status = $("#status_"+machine_id);
+                var item_os = $("#item_os_"+machine_id);
                 var tooltip = $("#item_name_"+machine_id).next('.show-tooltip-text');
                 if (tooltip.attr('class') != 'show-tooltip-text')
                         return false;
                 if( data.length > 0 ){
-                    item_status.attr('class', 'status_on')
+                    var new_line_pos=data.indexOf('\n');
+                    item_os.text(data.substring(0, new_line_pos).replace (/\*/g, ''));
+                    item_status.attr('class', 'status_on');
                     tooltip.html(data.replace(/\n/g,"<br/>"));
                 } else {
                     item_status.attr('class', 'status_off')
