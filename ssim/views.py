@@ -21,7 +21,7 @@ def index(request, address = None, ssim_user = ''):
     if ldap_connection == None:
         return redirect('symantec.ssim.views.login', address=address)
 
-    return render_to_response('ssim/index.html', {"ssim_user": ssim_user},
+    return render_to_response('ssim/index.html', {},
         mimetype="text/html")
 
 def login(request, address):
@@ -41,12 +41,12 @@ def login(request, address):
 
         print "LDAP+address: ", request.session['ldap']
 
-        return redirect('symantec.ssim.views.index', address=address, ssim_user=login)
+        return redirect("/ssim/%s/index" % address)
     
     except ldap.INVALID_CREDENTIALS:
         message = ERROR_MESSAGE
-    except ldap.LDAPError as ex:
-        message = "LDAP error type \"%s\". Arguments \"%s\". Message: " % (type(ex), ex.args, ex)
+    except ldap.LDAPError as (ex):
+        message = "LDAP error type \"%s\". Arguments \"%s\". Message: %s" % (type(ex), ex.args, ex)
     except DefaultDomainException as ex:
         message = ex.__str__()
     return display_login_form(request, error_message=message, address=address)
