@@ -36,13 +36,21 @@ def get_ldap_connection(session, address, force = False):
     #clear cache
     clear_ldap_cache()
     # Get session data
-    data = session['ldap'][address]
+
     ldap_connections_key = address+"__"+session.session_key
-    userDN = data['userDN']
-    password = data['password']
     #try to get LDAP connection from key
     l = settings.LDAP_CONNECTIONS.get(ldap_connections_key, None)
-    if force or l == None:
+
+    if 'ldap' not in session.keys():
+        return l
+    elif address not in session['ldap'].keys():
+        return l
+    elif force or l == None:
+        # get session info
+        data = session['ldap'][address]
+        userDN = data['userDN']
+        password = data['password']
+
         print "Connecting to LDAP", address
         server = 'ldaps://%s' % (address)
 

@@ -382,7 +382,7 @@ input[type=text], input[type=password], textarea, select, .vTextField {
 /* FORM BUTTONS */
 
 .button, input[type=submit], input[type=button], .submit-row input {
-    background: white url(../img/admin/nav-bg.gif) bottom repeat-x;
+    background: white url(../img/nav-bg.gif) bottom repeat-x;
     padding: 3px;
     color: black;
     border: 1px solid #bbb;
@@ -758,7 +758,7 @@ table#change-history tbody th {
 }
 
 #content-related .module h2 {
-    background: #eee url(../img/admin/nav-bg.gif) bottom left repeat-x;
+    background: #eee url(../img/nav-bg.gif) bottom left repeat-x;
     color: #666;
 }
 

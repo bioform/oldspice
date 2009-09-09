@@ -24,7 +24,9 @@
             <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}"><a href="https://{{item.address}}/" target="_blank">{{item.address}}</a></td>
             <td>
                 <span id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">
-                {{item.name}}
+                    <a class="ssim" href="/ssim/{{ item.address }}" target="_blank">
+                        {{item.name}}
+                    </a>
                 </span>
             </td>
             <td id="item_user_{{ item.id }}">{{item.user.first_name}} {{item.user.last_name}}</td>
@@ -107,6 +109,12 @@ var load_version = function(machine_id){
     }
   return false;
 }
+
+$('.ssim').click(function(event){
+    event.preventDefault();
+    window.open( $(this).attr('href'), $(this).attr('href'), "width=800,height=600,menubar=no,toolbar=no,location=no" );
+    return false;
+});
 
 // attach the click handler to the button
 //$("#send").click(take);
