@@ -23,4 +23,11 @@ def all(l, base_dn):
     list = [Location(item) for item in search_result]
     return list
 
+def client_dn(l, base_dn, clientAddress):
+    filter = '(symcIPAddresses=%s)' % clientAddress
+    attrs = ['host','dlmInstallDate','dlmName','symcIPAddresses']
+    raw_res = l.search_s( "ou=Locations,"+base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
+    search_result = ldaphelper.get_search_results( raw_res )
+    return search_result[0].get_dn()
+
 

@@ -38,6 +38,17 @@
             return false;
         }
 
+        var post = function(address,target, data){
+            // store value in data variable
+            $.ajaxSetup({ cache: false });
+            $.post(address,data,
+                function(data){
+                    $(target).html(data);
+                }
+            );
+            return false;
+        }
+
         $(document).ready(function() {
                 load_data('/ssim/{{ address }}/products', '#mainmenu');
         });

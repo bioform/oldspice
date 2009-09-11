@@ -1,17 +1,17 @@
-<table>
-    <caption>Collectors</caption>
+<table class="content_list">
+    <caption>Product List</caption>
     <tbody>
     {% for product in products %}
         <tr>
             <td>
-                <a class="mainmenu" href="/ssim/{{ address }}/product/{{ product.productID }}">{{ product.name }}</a>
+                <a class="content_list" href="/ssim/{{ address }}/product/{{ product.productID }}">{{ product.name }}</a>
             </td>
         <tr/>
     {% endfor %}
     </tbody>
 </table>
 <script>
-    $('a.mainmenu').click(function(event){
+    $('a.content_list').click(function(event){
         event.preventDefault();
         load_data($(this).attr('href'), '#content')
         return false;

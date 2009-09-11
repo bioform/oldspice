@@ -39,8 +39,25 @@ def locations(request, address):
 def products(request, address, client = None):
     ldap_connection = utils.get_ldap_connection(request.session, address)
     ldap_info = request.session['ldap'][address]
-    products = product.all(ldap_connection, ldap_info['domain'])
-    return render_to_response('ssim/products.html', {'products':products, 'address':address},
+    product_list= product.all(ldap_connection, ldap_info['domain'])
+    return render_to_response('ssim/products.html', {'products':product_list, 'address':address},
+        mimetype="text/html")
+
+def config_by_product_id(request, address, prodictID = None):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+    ldap_info = request.session['ldap'][address]
+    config_list = product.configurations(ldap_connection, ldap_info['domain'], prodictID)
+    return render_to_response('ssim/configurations.html', {'configurations':config_list, 'address':address},
+        mimetype="text/html")
+
+def client_products(request, address, client = None):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+    locationDN = request.POST.get('locationDN', None)
+    if locationDN == None:
+        ldap_info = request.session['ldap'][address]
+        locationDN = location.client_dn(ldap_connection, ldap_info['domain'], client)
+    products = product.client_products(ldap_connection, locationDN)
+    return render_to_response('ssim/client_products.html', {'products':products, 'address':address},
         mimetype="text/html")
 
 def login(request, address):

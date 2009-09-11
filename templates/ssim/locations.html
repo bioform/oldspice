@@ -4,7 +4,9 @@
     {% for client in clients %}
         <tr>
             <td>
-                <a class="mainmenu" href="/ssim/{{ address }}/products/{{ client.address }}">{{ client.host }}</a>
+                <a class="mainmenu" href="/ssim/{{ address }}/products/{{ client.address }}" locationDN="{{ client.dn }}">
+                    {{ client.host }}
+                </a>
             </td>
         <tr/>
     {% endfor %}
@@ -13,7 +15,7 @@
 <script>
     $('a.mainmenu').click(function(event){
         event.preventDefault();
-        load_data($(this).attr('href'), '#content')
+        post($(this).attr('href'), '#content',{'locationDN':$(this).attr('locationDN')})
         return false;
     });
 </script>
