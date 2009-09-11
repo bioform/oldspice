@@ -1,0 +1,19 @@
+<table>
+    <caption>Clients</caption>
+    <tbody>
+    {% for client in clients %}
+        <tr>
+            <td>
+                <a class="mainmenu" href="/ssim/{{ address }}/products/{{ client.address }}">{{ client.host }}</a>
+            </td>
+        <tr/>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $('a.mainmenu').click(function(event){
+        event.preventDefault();
+        load_data($(this).attr('href'), '#content')
+        return false;
+    });
+</script>

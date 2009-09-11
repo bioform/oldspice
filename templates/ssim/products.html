@@ -1,0 +1,20 @@
+<table>
+    <caption>Collectors</caption>
+    <tbody>
+    {% for product in products %}
+        <tr>
+            <td>
+                <a class="mainmenu" href="/ssim/{{ address }}/product/{{ product.prodictID }}">{{ product.name }}</a>
+            </td>
+        <tr/>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $('a.mainmenu').click(function(event){
+        event.preventDefault();
+        load_data($(this).attr('href'), '#content')
+        return false;
+    });
+</script>
+

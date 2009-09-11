@@ -6,22 +6,41 @@ import ldap
 from xml.dom.minidom import parse, parseString
 
 from symantec.ssim.utils import helper as utils
+from symantec.ssim.utils import location
+from symantec.ssim.utils import product
+
 from symantec.ssim.exceptions import *
 from datetime import datetime
 from django.shortcuts import redirect
+import sys
 
 
 ERROR_MESSAGE = ugettext_lazy("Please enter a correct username and password. Note that both fields are case-sensitive.")
 LOGIN_FORM_KEY = 'this_is_the_login_form'
 root_path = None
 
-def index(request, address = None, ssim_user = ''):
+def index(request, address = None):
     
     ldap_connection = utils.get_ldap_connection(request.session, address)
     if ldap_connection == None:
         return redirect('symantec.ssim.views.login', address=address)
 
-    return render_to_response('ssim/index.html', {},
+    return render_to_response('ssim/index.html', {'address':address},
+        mimetype="text/html")
+
+def locations(request, address):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+    ldap_info = request.session['ldap'][address]
+    clients = location.all(ldap_connection, ldap_info['domain'])
+
+    return render_to_response('ssim/locations.html', {'clients':clients, 'address':address},
+        mimetype="text/html")
+
+def products(request, address, client = None):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+    ldap_info = request.session['ldap'][address]
+    products = product.all(ldap_connection, ldap_info['domain'])
+    return render_to_response('ssim/products.html', {'products':products, 'address':address},
         mimetype="text/html")
 
 def login(request, address):
@@ -41,7 +60,7 @@ def login(request, address):
 
         print "LDAP+address: ", request.session['ldap']
 
-        return redirect("/ssim/%s/index" % address)
+        return redirect("/ssim/%s" % address)
     
     except ldap.INVALID_CREDENTIALS:
         message = ERROR_MESSAGE
@@ -83,6 +102,9 @@ def ldap_authenticate(request):
     password = request.POST.get('password')
     # Serialize the result of the database retrieval to JSON and send an application/json response
     xml = utils.get_auth_xml(address,login,password);
+    if len(xml) == 0:
+        raise DefaultDomainException, "Illegal SSIM XML response. See log files."
+
     dom = parseString(xml)
     infos = dom.getElementsByTagName("sessionInfo")
     if len(infos) == 1:
