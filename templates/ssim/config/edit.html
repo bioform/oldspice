@@ -1,0 +1,40 @@
+<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs({ fx: { opacity: 'toggle', duration: 'fast' } });
+	});
+</script>
+
+
+<div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">
+    Configuration {{ config.name }}
+</div>
+
+<div id="tabs">
+	<ul>
+            <li>
+                <a href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/general-tab">
+                        <span>General</span>
+                </a>
+            </li>
+	    <li>
+                <a href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/options-tab">
+                    <span>Options</span>
+                </a>
+            </li>
+            <li>
+                <a href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/filter-tab">
+                    <span>Filter</span>
+                </a>
+            </li>
+            <li>
+                <a href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/aggregator-tab">
+                    <span>Aggregator</span>
+                </a>
+            </li>
+            <li>
+                <a href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/sensor-tab">
+                    <span>Sensor</span>
+                </a>
+            </li>
+	</ul>
+</div>

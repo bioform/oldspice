@@ -1,0 +1,32 @@
+<div style="height:29em;overflow:auto;border:inset thin;background-color:white;padding:2px;">
+    <ul class="link_list">
+        {% for sensor in sensors %}
+            <li>
+                <a href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}">{{ sensor.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% if selected_link %}
+<script>
+    var select_item = function(event){
+        event.preventDefault();
+        $('.link_list a').each(function(i, item){
+            //alert("-->" + $(item).attr('href'));
+            if( $(item).attr('href') == $(this).attr('href')){
+                $(this).addClass('selected')
+            } else {
+                $(this).removeClass('selected')
+            }
+        });
+        load_data($(this).attr('href'), '#sensor');
+    }
+
+    $(document).ready(function() {
+                $('.link_list a').click(select_item);
+                $('.link_list a:first').click();
+                //load_data('/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ selected_link }}', '#sensor');
+            });
+</script>
+{% endif %}

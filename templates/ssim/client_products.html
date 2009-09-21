@@ -1,15 +1,14 @@
-<table class="content_list">
-    <caption>Product List</caption>
-    <tbody>
-    {% for product in products %}
-        <tr>
-            <td>
+<div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">Product List</div>
+<div>
+    <ul>
+        {% for product in products %}
+            <li>
                 <a class="content_list" href="/ssim/{{ address }}/product/{{ product.productID }}">{{ product.name }}</a>
-            </td>
-        <tr/>
-    {% endfor %}
-    </tbody>
-</table>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
 <script>
     $('a.content_list').click(function(event){
         event.preventDefault();

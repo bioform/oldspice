@@ -1,17 +1,16 @@
-<table>
-    <caption>Clients</caption>
-    <tbody>
-    {% for client in clients %}
-        <tr>
-            <td>
+<div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">Clients</div>
+
+<div>
+    <ul>
+        {% for client in clients %}
+            <li>
                 <a class="mainmenu" href="/ssim/{{ address }}/products/{{ client.address }}" locationDN="{{ client.dn }}">
                     {{ client.host }}
                 </a>
-            </td>
-        <tr/>
-    {% endfor %}
-    </tbody>
-</table>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 <script>
     $('a.mainmenu').click(function(event){
         event.preventDefault();

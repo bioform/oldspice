@@ -1,0 +1,49 @@
+.field-set{
+    padding-bottom:10px;
+    display:table;
+}
+
+.field-set label {
+    font-weight: normal !important;
+}
+
+.field-set .required label, label.required {
+    font-weight: bold !important;
+}
+
+.field-row {
+    display: table-row;
+}
+
+.field-cell {
+    display:table-cell;
+    vertical-align:top;
+    padding: 3px 0px 2px 0px;
+}
+
+.field-row label{
+    width: 13em;
+    float: left;
+}
+
+.field-row input{
+    width: 20em;
+}
+
+.link_list {
+    padding:0;
+    margin:0;
+}
+.link_list li {
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+
+.link_list li a{
+    font-weight:bold;
+}
+
+a.selected {
+    background-color: rgb(230,230,230)
+}

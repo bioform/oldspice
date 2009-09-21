@@ -1,0 +1,17 @@
+<div style="display:table;height:30em;">
+    <div style="display:table-row;">
+        <div id="sensors" style="display:table-cell;width:15em;">
+            Loading...
+        </div>
+        <div id="sensor" style="display:table-cell;padding:2px 2px 2px 10px;">
+            Loading...
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+                var link = '/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config_name }}/sensors'
+                load_data(link, '#sensors');
+            });
+</script>

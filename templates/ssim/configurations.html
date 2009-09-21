@@ -1,0 +1,19 @@
+<div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">Configurations</div>
+<div>
+    <ul>
+        {% for config in configurations %}
+            <li>
+                <a class="content_list" href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}" configDN="{{ config.dn }}">{{ config.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    $('.content_list').click(function(event){
+        event.preventDefault();
+        post($(this).attr('href'), '#content',{'configDN':$(this).attr('configDN')})
+        return false;
+    });
+</script>
+

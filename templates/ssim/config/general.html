@@ -1,0 +1,30 @@
+<form action="" method="POST" style="height:30em;">
+
+<div>General information about configuration.</div>
+<hr/>
+<div class="field-set">
+    {% for field in form.visible_fields %}
+        {# Include the hidden fields in the form #}
+        {% if forloop.first %}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+        {% endif %}
+        <div class="field-row">
+            <div class="field-cell">
+                {{ field.label_tag }}
+            </div>
+            <div class="field-cell">
+                {{ field.errors }}
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div style="text-align:center;">
+    <input type="submit" value="Submit" class="fg-button ui-state-default ui-corner-all">
+    <input type="reset" value="Reset" class="fg-button ui-state-default ui-corner-all">
+</div>
+
+</form>

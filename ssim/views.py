@@ -8,6 +8,7 @@ from xml.dom.minidom import parse, parseString
 from symantec.ssim.utils import helper as utils
 from symantec.ssim.utils import location
 from symantec.ssim.utils import product
+from symantec.ssim.utils import configuration
 
 from symantec.ssim.exceptions import *
 from datetime import datetime
@@ -38,16 +39,18 @@ def locations(request, address):
 
 def products(request, address, client = None):
     ldap_connection = utils.get_ldap_connection(request.session, address)
+    if ldap_connection is None:
+        return HttpResponse("Please reconnect to SSIM", mimetype='text/plain')
     ldap_info = request.session['ldap'][address]
     product_list= product.all(ldap_connection, ldap_info['domain'])
     return render_to_response('ssim/products.html', {'products':product_list, 'address':address},
         mimetype="text/html")
 
-def config_by_product_id(request, address, prodictID = None):
+def config_by_product_id(request, address, productID = None):
     ldap_connection = utils.get_ldap_connection(request.session, address)
     ldap_info = request.session['ldap'][address]
-    config_list = product.configurations(ldap_connection, ldap_info['domain'], prodictID)
-    return render_to_response('ssim/configurations.html', {'configurations':config_list, 'address':address},
+    (product_instance, config_root, config_list) = configuration.configurations(ldap_connection, ldap_info['domain'], productID)
+    return render_to_response('ssim/configurations.html', {'product':product_instance,'config_root':config_root, 'configurations':config_list, 'address':address},
         mimetype="text/html")
 
 def client_products(request, address, client = None):

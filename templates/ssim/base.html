@@ -3,52 +3,43 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/css/ssim/base.css{% endblock %}" />
+    <link rel="stylesheet" type="text/css" href="/css/ssim/base.css" />
+
+    <link rel="stylesheet" type="text/css" href="/css/ssim/sunny/jquery-ui-1.7.2.custom.css" />
 
     <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
+
+    <script type="text/javascript" src="/js/ssim.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/ssim/forms.css" />
+
+    <link rel="stylesheet" type="text/css" href="/css/ssim/toolbar.css" />
+    <script type="text/javascript" src="/js/toolbar.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/css/tooltip.css" />
     <script type="text/javascript" src="/js/tooltip.js"></script>
 
     <title>SSIM administrations</title>
 </head>
 <body>
-    <div id="header">{% block header %}<h1>SSIM Client</h1>{% endblock %}</div>
-    <div id="mainmenu">{% block mainmenu %}Loading...{% endblock %}</div>
-    <div id="submenu"></div>
+    <div id="header">{% block header %}<h1 class="symantec">SSIM Client</h1>{% endblock %}</div>
+    <div id="mainmenu">
+        {% block mainmenu %}
+            Loading...
+        {% endblock %}
+    </div>
+    <div id="submenu" class="ui-widget-header" style="border:none;"></div>
     <div id="content">{% block content %}Content.{% endblock %}</div>
-    <div id="footer">
+    <div id="footer" class="fg-toolbar ui-widget-header ui-corner-all ui-helper-clearfix">
         {% block footer %}
-            &nbsp;&nbsp;
-        <a class="link_for_mainmenu" href="/ssim/{{ address }}/products">products</a>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a class="link_for_mainmenu" href="/ssim/{{ address }}/locations">clients</a>
+            <div class="fg-buttonset fg-buttonset-single ui-helper-clearfix">
+                <a href="/ssim/{{ address }}/products" class="link_for_mainmenu fg-button ui-state-default ui-state-active ui-priority-primary ui-corner-left" title="Open">products</a>
+                <a href="/ssim/{{ address }}/locations" class="link_for_mainmenu fg-button ui-state-default ui-priority-primary ui-corner-right" title="Save">clients</a>
+            </div>
         {% endblock %}
     </div>
   </body>
   <script>
-        var load_data = function(address,target){
-            // store value in data variable
-            var data = {};
-            $.ajaxSetup({ cache: false });
-            $.get(address,data,
-                function(data){
-                    $(target).html(data);
-                }
-            );
-            return false;
-        }
-
-        var post = function(address,target, data){
-            // store value in data variable
-            $.ajaxSetup({ cache: false });
-            $.post(address,data,
-                function(data){
-                    $(target).html(data);
-                }
-            );
-            return false;
-        }
-
         $(document).ready(function() {
                 load_data('/ssim/{{ address }}/products', '#mainmenu');
         });

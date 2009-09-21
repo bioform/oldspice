@@ -3,6 +3,7 @@ from symantec.ssim.utils import ldaphelper
 
 class Product:
     def __init__(self, search_result):
+        self.dn = search_result.get_dn()
         # get product ID
         attr = 'dlmIdentifyingNumber'
         if search_result.has_attribute('symcProductIdentifyingNumber'):
@@ -44,13 +45,17 @@ def client_products(l, base_dn):
     list = filter_pruducts([Product(item) for item in search_result])
     return list
 
-def configurations(l, base_dn, productID):
-    filter = '(dlmSKUNumber=*)'
-    attrs = ['dlmIdentifyingNumber','dlmName','dlmVersion', 'dlmSKUNumber']
+def pruduct_by_id(l, base_dn, productID):
+    filter = '(dlmIdentifyingNumber=%s)' % productID
+    attrs = ['dlmIdentifyingNumber','dlmName','dlmVersion']
     raw_res = l.search_s( "cn=Products,ou=Applications,"+base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
-    search_result = ldaphelper.get_search_results( raw_res )
-    list = [Product(item) for item in search_result]
-    return list
+    search_results = ldaphelper.get_search_results( raw_res )
+    if  len(search_results) == 0:
+        return None
+    elif len(search_results) > 1:
+        raise Exception, "LDAM return more then one product for provided ID(%s)" % productID
+
+    return Product(search_results[0])
 
 def filter_pruducts(pruduct_list):
     return set([p for p in pruduct_list if p.productID not in ['3000','3014'] ])

@@ -1,15 +1,15 @@
-<table>
-    <caption>Collectors</caption>
-    <tbody>
+<div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">Collectors</div>
+
+<div>
+<ul>
     {% for product in products %}
-        <tr>
-            <td>
-                <a class="mainmenu" href="/ssim/{{ address }}/product/{{ product.productID }}">{{ product.name }}</a>
-            </td>
-        <tr/>
+        <li>
+            <a class="mainmenu" href="/ssim/{{ address }}/product/{{ product.productID }}">{{ product.name }}</a>
+        </li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>
+</div>
+
 <script>
     $('a.mainmenu').click(function(event){
         event.preventDefault();
