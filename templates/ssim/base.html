@@ -16,20 +16,36 @@
     <link rel="stylesheet" type="text/css" href="/css/ssim/toolbar.css" />
     <script type="text/javascript" src="/js/toolbar.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/tooltip.css" />
-    <script type="text/javascript" src="/js/tooltip.js"></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/splitter.js"></script>
+
+    <script>
+        $().ready(function() {
+                $("#mainSplitter").splitter({
+                        type: "v",
+                        outline: true,
+                        minLeft: 100, sizeLeft: 300, minRight: 300,
+                        resizeToWidth: true,
+                        cookie: "vsplitter",
+                        anchorToWindow: true,
+                        accessKey: 'I'
+                });
+        });
+    </script>
 
     <title>SSIM administrations</title>
 </head>
 <body>
     <div id="header">{% block header %}<h1 class="symantec">SSIM Client</h1>{% endblock %}</div>
-    <div id="mainmenu">
-        {% block mainmenu %}
-            Loading...
-        {% endblock %}
+
+    <div id="mainSplitter">
+        <div id="mainmenu">
+            {% block mainmenu %}
+                Loading...
+            {% endblock %}
+        </div>
+        <div id="content">{% block content %}Content.{% endblock %}</div>
     </div>
-    <div id="submenu" class="ui-widget-header" style="border:none;"></div>
-    <div id="content">{% block content %}Content.{% endblock %}</div>
     <div id="footer" class="fg-toolbar ui-widget-header ui-corner-all ui-helper-clearfix">
         {% block footer %}
             <div class="fg-buttonset fg-buttonset-single ui-helper-clearfix">

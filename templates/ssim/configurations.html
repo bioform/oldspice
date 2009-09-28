@@ -3,7 +3,7 @@
     <ul>
         {% for config in configurations %}
             <li>
-                <a class="content_list" href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}" configDN="{{ config.dn }}">{{ config.name }}</a>
+                <a class="content_list" href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/" configDN="{{ config.dn }}">{{ config.name }}</a>
             </li>
         {% endfor %}
     </ul>

@@ -42,6 +42,7 @@
 
 .link_list li a{
     font-weight:bold;
+    white-space:nowrap;
 }
 
 a.selected {

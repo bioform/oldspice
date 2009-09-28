@@ -7,5 +7,5 @@ urlpatterns = patterns('symantec.ssim.views',
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)$', 'config_by_product_id'),
     (r'^(?P<address>[^/]+)/products/(?P<client>[^/]+)$', 'client_products'),
     (r'^ldap/$', 'test_ldap'),
-    (r'^(?P<address>[^/]+)$', 'index'),
+    (r'^(?P<address>[^/]+)/$', 'index'),
 )

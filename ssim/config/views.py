@@ -77,11 +77,27 @@ def config_sensor(request, address, productID, config_name, sensor_name):
 
     sensor_config = configuration.get_sensor_config(ldap_connection, config)
 
+    #check that sensor_name is specified
+    if not sensor_name or len(sensor_name) == 0:
+        sensor_name = None
+
     #create dynamic form !!!
     form_clazz = sensor.get_sensor_form(sensor_config.data, sensor_name = sensor_name)
     sensor_instance = form_clazz.sensor
-    form = form_clazz()
-    return render_to_response('ssim/config/sensor.html', {'productID':productID, 'config':config, 'sensor':sensor_instance, 'form':form,'address':address},
+    # check request method
+    form = None
+    if request.method == 'GET':
+        form = form_clazz()
+    elif request.method == 'POST':
+        form = form_clazz(request.POST)
+        print "====>", form.update_xml()
+
+    return render_to_response('ssim/config/sensor.html', {'productID':productID, 
+        'config':config,
+        'sensor':sensor_instance,
+        'form':form,
+        'address':address,
+        'action':request.path},
         mimetype="text/html")
 
 def config_sensors(request, address, productID, config_name):

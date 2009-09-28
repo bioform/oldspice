@@ -1,4 +1,4 @@
-<div style="height:29em;overflow:auto;border:inset thin;background-color:white;padding:2px;">
+<div style="height:26em;overflow:auto;border:inset thin;background-color:white;padding:2px;">
     <ul class="link_list">
         {% for sensor in sensors %}
             <li>
@@ -7,6 +7,12 @@
         {% endfor %}
     </ul>
 </div>
+
+<div class="fg-toolbar ui-helper-clearfix">
+        <a href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Print"><span class="ui-icon ui-icon-plus"></span> Add</a>
+        <a href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Email"><span class="ui-icon ui-icon-minus"></span> Remove</a>
+</div>
+
 
 {% if selected_link %}
 <script>
@@ -26,7 +32,7 @@
     $(document).ready(function() {
                 $('.link_list a').click(select_item);
                 $('.link_list a:first').click();
-                //load_data('/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ selected_link }}', '#sensor');
+                $(SetupButtons);
             });
 </script>
 {% endif %}

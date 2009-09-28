@@ -24,7 +24,7 @@
             <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}"><a href="https://{{item.address}}/" target="_blank">{{item.address}}</a></td>
             <td>
                 <span id="item_name_{{ item.id }}" class="show-tooltip" title="Updating...<br>{{ item.info|html }}">
-                    <a class="ssim" href="/ssim/{{ item.address }}" target="_blank">
+                    <a class="ssim" href="/ssim/{{ item.address }}/" target="_blank">
                         {{item.name}}
                     </a>
                 </span>
@@ -33,7 +33,7 @@
             <td>{{ item.location }}</td>
             <td id="item_os_{{ item.id }}">{{ item.os_name }}</td>
             <td id="status_{{ item.id }}" class="status">&nbsp;</td>
-            <td id="take_{{ item.id }}" onclick="take('{{ item.id }}')" class="{{ item|take:user }}">&nbsp;</td>
+            <td id="take_{{ item.id }}" onclick="take('{{ item.id }}')" class="{{ item|take:user }}" title="Take for myself">&nbsp;</td>
         </tr>
         {% endfor %}
     </tbody>

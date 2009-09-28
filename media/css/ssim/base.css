@@ -1,6 +1,6 @@
 body {
-    font-family: Verdana,Arial,sans-serif;
-    font-size: .8em;
+    font-family: Tahoma, Verdana,Arial,sans-serif;
+    font-size: .73em;
 }
 
 #header {
@@ -25,32 +25,36 @@ body {
     white-space: nowrap;
     border-width:1px;
   }
-  #mainmenu {
+
+#mainSplitter {
     position: fixed;
     left: 0px;
-    width: 300px;
-    top: 64px;
-    bottom: 26px;
-    white-space: nowrap;
-    overflow:hidden;
-    border:transparent solid 0px;
-    padding-bottom:4px;
-  }
-  #submenu {
-    position: fixed;
-    left: 300px;
-    width: 3px;
-    top: 64px;
-    bottom: 26px;
-    /*background: #7ba0c6 url(../../img/ssim/header-bg.gif) top left repeat-x;*/
-    overflow: hidden;
-  }
-  #content {
-    position: fixed;
-    left: 303px;
     right: 0px;
     top: 64px;
     bottom: 26px;
+    border:none;
+}
+
+/*
+* Splitter bar style; the .active class is added when the
+* mouse is over the splitter or the splitter is focused
+* via the keyboard taborder or an accessKey.
+*/
+#mainSplitter .vsplitbar {
+    width: 6px;
+    background: #aca url(../../img/ssim/vgrabber.gif) no-repeat center;
+}
+#mainSplitter .vsplitbar.active {
+    background: #da8 url(../../img/ssim/vgrabber.gif) no-repeat center;
+    opacity: 0.7;
+}
+
+
+  #mainmenu {
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  #content {
     overflow: auto;
   }
 
@@ -61,7 +65,8 @@ body {
   }
   #mainmenu ul li{
       margin:0;
-      padding: .2em 0em;
+      padding: .3em 0em;
+      white-space:nowrap;
   }
 
   #mainmenu ul li .counter{
@@ -86,6 +91,7 @@ body {
       text-decoration:none;
       display:block;
       margin-right:1px;
+      color: black;
   }
 
   a:HOVER {
