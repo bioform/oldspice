@@ -16,7 +16,7 @@ class Sensor:
         self.fields = fields
 
 class SensorField:
-    def __init__(self, name = 'MyName', title = 'MyTitle', type='MyType', required=False, value='', enumvalues = None):
+    def __init__(self, name = 'MyName', title = 'MyTitle', type='MyType', required=False, value='', enumvalues = None, encrypted = False):
         if enumvalues is None:
             enumvalues = []
         self.name = name
@@ -29,6 +29,9 @@ class SensorField:
             self.required = True
 
         self.value = value
+        self.encrypted = False
+        if encrypted == 'true':
+            self.encrypted = True
 
     def __str__(self):
         return "%s(%s)" % (self.name, self.type)
@@ -64,13 +67,14 @@ def get_sensor_specs(dom):
         type = item.getAttribute('type')
         value = item.getAttribute('default')
         required = item.getAttribute('required')
+        encrypted = item.getAttribute('encrypted')
 
         choices = []
         enumvalues = item.getAttribute('enumvalues')
         if enumvalues:
             for ent in enumvalues.split(','):
                 choices.append((ent,ent))
-        sensor_spec[name] = SensorField(name=name, title=title,type=type,value=value, required=required, enumvalues=choices)
+        sensor_spec[name] = SensorField(name=name, title=title,type=type,value=value, required=required, enumvalues=choices, encrypted=encrypted)
     return sensor_spec
 
 def parse_sensor_data(sensor_xml, sensor_name):
@@ -133,7 +137,14 @@ def update_sensor_xml(form):
         sensor.setAttribute('enabled', 'false')
         sensor.setAttribute('name', len('sensor_nodes'))
         #add all fields
-        
+        for name in sensor_spec:
+            property = dom.createElement('property')
+            property.setAttribute('name', name)
+            field = sensor_spec[name]
+            property.setAttribute('encrypted', field.encrypted)
+            txt = dom.createTextNode(form.data[name])
+            property.appendChild(txt)
+            sensor.appendChild(property)
         #add new sensor
         sensors = dom.getElementsByTagName("sensors")[0]
         sensors.appendChild(sensor);
@@ -143,15 +154,15 @@ def update_sensor_xml(form):
 
 def get_form_field(field):
     if field.type == 'int':
-        return forms.IntegerField(label=field.title, required=field.required, initial = field.value, widget=textWidget)
+        return forms.IntegerField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=textWidget)
     elif field.type == 'password':
-        return forms.CharField(label=field.title, required=field.required, initial = field.value, widget=passwordWidget)
+        return forms.CharField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=passwordWidget)
     elif field.type == 'enum':
-        return forms.ChoiceField(label=field.title, required=field.required, initial = field.value, choices = field.enumvalues, widget=copy(selectWidget))
+        return forms.ChoiceField(label=field.title, required=field.required, initial = field.value, choices = field.enumvalues, encrypted = field.encrypted, widget=copy(selectWidget))
     elif field.type == 'boolean':
-        return forms.BooleanField(label=field.title, required=field.required, initial = field.value, widget=checkboxWidget)
+        return forms.BooleanField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=checkboxWidget)
 
-    return forms.CharField(label=field.title, required=field.required, initial = field.value, widget=textWidget)
+    return forms.CharField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=textWidget)
 
 def get_sensor_form(sensor_xml, sensor_name = None):
     """Return the form for a specific Board."""
