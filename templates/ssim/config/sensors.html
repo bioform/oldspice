@@ -2,37 +2,64 @@
     <ul class="link_list">
         {% for sensor in sensors %}
             <li>
-                <a href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}">{{ sensor.name }}</a>
+                <a id="sensor_{{ sensor.name }}" name="{{ sensor.name }}" href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}">{{ sensor.name }}</a>
             </li>
         {% endfor %}
     </ul>
 </div>
 
 <div class="fg-toolbar ui-helper-clearfix">
-        <a href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Print"><span class="ui-icon ui-icon-plus"></span> Add</a>
-        <a href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Email"><span class="ui-icon ui-icon-minus"></span> Remove</a>
+        <a id="add"    href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Add new sensor"><span class="ui-icon ui-icon-plus"></span> Add</a>
+        <a id="remove" href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Remove sensor"><span class="ui-icon ui-icon-minus"></span> Remove</a>
 </div>
 
 
-{% if selected_link %}
 <script>
-    var select_item = function(event){
+    $('#add').click(function(event){
         event.preventDefault();
+        load_data($(this).attr('href'), '#sensor')
+        select_item(null);
+        return false;
+    });
+    $('#remove').click(function(event){
+        event.preventDefault();
+        // get selected sensor
+        var selected_item = null;
         $('.link_list a').each(function(i, item){
-            //alert("-->" + $(item).attr('href'));
-            if( $(item).attr('href') == $(this).attr('href')){
-                $(this).addClass('selected')
-            } else {
-                $(this).removeClass('selected')
+            if( $(item).is('.selected') ){
+                selected_item = $(item);
             }
         });
+        if( selected_item ){
+            load_data('/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/' +
+                selected_item.attr('name') + '/delete', '#sensors')
+        }
+        return false;
+    });
+</script>
+
+{% if first_link %}
+<script>
+    var select_and_load_item = function(event){
+        event.preventDefault();
+        select_item($(this));
         load_data($(this).attr('href'), '#sensor');
     }
 
-    $(document).ready(function() {
-                $('.link_list a').click(select_item);
-                $('.link_list a:first').click();
-                $(SetupButtons);
-            });
+    $('.link_list a').click(select_and_load_item);
 </script>
 {% endif %}
+
+{% if selected_link %}
+    <script>
+        $(document).ready(function() {
+                select_item($('#sensor_{{ selected_link }}'))
+            });
+    </script>
+{% else %}{% if first_link %}
+    <script>
+        $(document).ready(function() {
+                $('.link_list a:first').click();
+            });
+    </script>
+{% endif %}{% endif %}

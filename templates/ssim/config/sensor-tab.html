@@ -11,7 +11,20 @@
 
 <script>
     $(document).ready(function() {
-                var link = '/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config_name }}/sensors'
+                var link = '/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config_name }}/sensors/'
                 load_data(link, '#sensors');
             });
+</script>
+
+<script>
+    var select_item = function(link){
+        $('.link_list a').each(function(i, item){
+            //alert("-->" + $(item).attr('href'));
+            if( link != null && $(item).attr('href') == link.attr('href')){
+                $(item).addClass('selected')
+            } else {
+                $(item).removeClass('selected')
+            }
+        });
+    }
 </script>

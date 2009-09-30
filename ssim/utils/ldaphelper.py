@@ -50,6 +50,8 @@ Make sure you do something similar in your own code, or you may end up
 with false misses when you look for attributes in a case-sensitive way,
 e.g. when you look for givenName in an entry where the attribute name is in the form givenname.
 """
+
+
 class GeneralizedTimeZone(datetime.tzinfo):
     """This class is a basic timezone wrapper for the offset specified
        in a Generalized Time.  It is dst-ignorant."""

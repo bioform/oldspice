@@ -29,3 +29,67 @@
 <script>
     $(SetupButtons);
 </script>
+
+{% if update_item_list %}
+    <script type="text/javascript">
+        var link = '/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensors/{{ sensor.name }}'
+        load_data(link, '#sensors');
+    </script>
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+// ---- Форма -----
+  var options = {
+    // элемент, который будет обновлен по ответу сервера
+    target: "#sensor",
+    beforeSubmit: showRequest, // функция, вызываемая перед передачей
+    success: showResponse, // функция, вызываемая при получении ответа
+    timeout: 3000 // тайм-аут
+  };
+  
+  // привязываем событие submit к форме
+  $('#sensor form:first').submit(function() {
+    $(this).ajaxSubmit(options);
+    // !!! Важно !!!
+    // всегда возвращаем false, чтобы предупредить стандартные
+    // действия браузера (переход на страницу form.php)
+    return false;
+  });
+// ---- Форма -----
+});
+
+// вызов перед передачей данных
+function showRequest(formData, jqForm, options) {
+    // formData - массив; здесь используется $.param чтобы преобразовать его в строку для вывода в alert(),
+    // (только в демонстрационных целях), но в самом плагине jQuery Form это совершается автоматически.
+    var queryString = $.param(formData);
+    // jqForm это jQuery объект, содержащий элементы формы.
+    // Для доступа к элементам формы используйте
+    // var formElement = jqForm[0];
+
+    //alert('Вот что мы передаем: \n\n' + queryString);
+
+    // здесь можно вернуть false чтобы запретить отправку формы;
+    // любое отличное от fals значение разрешит отправку формы.
+    return true;
+}
+
+// вызов после получения ответа 
+function showResponse(responseText, statusText)  {
+    // для обычного html ответа, первый аргумент - свойство responseText
+    // объекта XMLHttpRequest
+
+    // если применяется метод ajaxSubmit (или ajaxForm) с использованием опции dataType
+    // установленной в 'xml', первый аргумент - свойство responseXML
+    // объекта XMLHttpRequest
+
+    // если применяется метод ajaxSubmit (или ajaxForm) с использованием опции dataType
+    // установленной в 'json', первый аргумент - объек json, возвращенный сервером.
+    if( statusText == 'success' ){
+        alert('Form is saved')
+    } else {
+        alert('Server status: ' + statusText + '\n\nServer response: \n' + responseText);
+    }
+}
+</script>

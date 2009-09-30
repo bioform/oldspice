@@ -2,6 +2,7 @@ import ldap
 from symantec.ssim.utils import ldaphelper
 from symantec.ssim.utils.ldaphelper import LDAPSearchResult
 from symantec.ssim.utils import product
+from datetime import datetime
 
 CONFIGURATION_ATTRS = ['dlmName','symcValid','dlmDescription','dlmSettingContextSettingRef','symcElementConfigurationElementRef', 'symcSequenceRevision']
 SETTINGS_ATTRS = ['dlmCaption','binProperty','binPropertyType','dlmDescription','dlmSettingID','symcMetaData', 'symcSequenceRevision', 'symcValid']
@@ -12,14 +13,17 @@ class Configuration:
         self.name = search_result.get_attr_values('dlmName')[0]
 
         if search_result.has_attribute('dlmDescription'):
-            self.desc = search_result.get_attr_values('dlmDescription')
+            self.desc = search_result.get_attr_values('dlmDescription')[0]
         else:
             self.desc = ''
 
         self.settings = search_result.get_attr_values('dlmSettingContextSettingRef')
         self.elements = search_result.get_attr_values('symcElementConfigurationElementRef')
-        self.updated_at = search_result.get_attr_values('symcSequenceRevision')[0]
-        self.updated_at = ldaphelper.parse_generalized_time(self.updated_at)
+        if  search_result.has_attribute('symcSequenceRevision'):
+            self.updated_at = search_result.get_attr_values('symcSequenceRevision')[0]
+            self.updated_at = ldaphelper.parse_generalized_time(self.updated_at)
+        else:
+            self.updated_at = datetime.now()
 
     def __str__(self):
         return self.name
@@ -115,3 +119,7 @@ def get_sensor_config(l, config):
         if item.name == 'WorkingGroup Settings':
             return item
     return None
+
+def update_settings(l, dn, xml):
+    mod_attrs = [( ldap.MOD_REPLACE, 'binProperty', xml.encode("utf-8") )]
+    l.modify_s(dn, mod_attrs)

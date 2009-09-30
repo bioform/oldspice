@@ -1,6 +1,7 @@
 from django import forms
 from copy import copy
 from xml.dom.minidom import parse, parseString
+from symantec.ssim.OrderedDict import *
 
 textWidget = forms.TextInput(attrs={'class':'text ui-widget-content ui-corner-all'})
 passwordWidget = forms.PasswordInput(attrs={'class':'text ui-widget-content ui-corner-all'})
@@ -58,7 +59,7 @@ def get_sensor_specs(dom):
     """
         Extract all sensor specs from document
     """
-    sensor_spec = {}
+    sensor_spec = OrderedDict()
     sensor_spec_node = dom.getElementsByTagName("sensor-spec")[0]
     sensor_spec_properties = sensor_spec_node.getElementsByTagName("property")
     for item in sensor_spec_properties:
@@ -114,6 +115,20 @@ def delete_all_childs(node):
         for child in node.childNodes:
             node.removeChild(child)
 
+def remove_sensor_from_xml(sensor_xml, sensor_name):
+    #parse XML
+    dom = parseString(sensor_xml)
+    #get all sensors
+    sensors = dom.getElementsByTagName("sensors")[0]
+    sensor_nodes = dom.getElementsByTagName("sensor")
+    for item in sensor_nodes:
+        name = item.getAttribute('name')
+        if name == sensor_name:
+            sensors.removeChild(item)
+            break
+
+    return dom.toxml()
+
 def update_sensor_xml(form):
     sensor_name = form.sensor_name
     #parse XML
@@ -131,17 +146,19 @@ def update_sensor_xml(form):
                     txt = dom.createTextNode(form.data[name])
                     property.appendChild(txt)
     else:
+        index = len(sensor_nodes) + 1
+        sensor_name = "Sensor %s" % index
         # get sensor_spec
         sensor_spec = get_sensor_specs(dom)
-        sensor = dom.createElement('sensor');
+        sensor = dom.createElement('sensor')
         sensor.setAttribute('enabled', 'false')
-        sensor.setAttribute('name', len('sensor_nodes'))
+        sensor.setAttribute('name', sensor_name)
         #add all fields
         for name in sensor_spec:
             property = dom.createElement('property')
             property.setAttribute('name', name)
             field = sensor_spec[name]
-            property.setAttribute('encrypted', field.encrypted)
+            property.setAttribute('encrypted', ('%s' % field.encrypted).lower())
             txt = dom.createTextNode(form.data[name])
             property.appendChild(txt)
             sensor.appendChild(property)
@@ -150,19 +167,19 @@ def update_sensor_xml(form):
         sensors.appendChild(sensor);
         
 
-    return dom.toxml()
+    return sensor_name, dom.toxml()
 
 def get_form_field(field):
     if field.type == 'int':
-        return forms.IntegerField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=textWidget)
+        return forms.IntegerField(label=field.title, required=field.required, initial = field.value, widget=textWidget)
     elif field.type == 'password':
-        return forms.CharField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=passwordWidget)
+        return forms.CharField(label=field.title, required=field.required, initial = field.value, widget=passwordWidget)
     elif field.type == 'enum':
-        return forms.ChoiceField(label=field.title, required=field.required, initial = field.value, choices = field.enumvalues, encrypted = field.encrypted, widget=copy(selectWidget))
+        return forms.ChoiceField(label=field.title, required=field.required, initial = field.value, choices = field.enumvalues, widget=copy(selectWidget))
     elif field.type == 'boolean':
-        return forms.BooleanField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=checkboxWidget)
+        return forms.BooleanField(label=field.title, required=field.required, initial = field.value, widget=checkboxWidget)
 
-    return forms.CharField(label=field.title, required=field.required, initial = field.value, encrypted = field.encrypted, widget=textWidget)
+    return forms.CharField(label=field.title, required=field.required, initial = field.value, widget=textWidget)
 
 def get_sensor_form(sensor_xml, sensor_name = None):
     """Return the form for a specific Board."""

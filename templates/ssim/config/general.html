@@ -1,4 +1,4 @@
-<form action="" method="POST" style="height:30em;">
+<form id="general_tab_form" action="{{ action }}" method="POST" style="height:30em;">
 
 <div>General information about configuration.</div>
 <hr/>
@@ -28,3 +28,29 @@
 </div>
 
 </form>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var options = {
+    // элемент, который будет обновлен по ответу сервера
+    target: $('#general_tab_form').parent(),
+    success: showResponse, // функция, вызываемая при получении ответа
+    timeout: 3000 // тайм-аут
+  };
+
+  // привязываем событие submit к форме
+  $('#general_tab_form').submit(function() {
+    $(this).ajaxSubmit(options);
+    return false;
+  });
+});
+
+// вызов после получения ответа
+function showResponse(responseText, statusText)  {
+    if( statusText == 'success' ){
+        alert('Form is saved')
+    } else {
+        alert('Server status: ' + statusText + '\n\nServer response: \n' + responseText);
+    }
+}
+</script>
