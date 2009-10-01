@@ -19,6 +19,9 @@
     <script type="text/javascript" src="/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="/js/splitter.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="/css/ssim/notificationmsg.css" />
+    <script type="text/javascript" src="/js/ui.notificationmsg.js"></script>
+
     <script>
         $().ready(function() {
                 $("#mainSplitter").splitter({
@@ -54,6 +57,39 @@
             </div>
         {% endblock %}
     </div>
+
+    <!-- Notification block -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#msg1').notificationmsg({period: 1000});
+            $('#closebutton').click(function(){ $('#msg1').notificationmsg('hide'); });
+        });
+
+        function notify(text)
+        {
+            var animStyle = 'slide'//fade,slidethru
+            $("#modalbody").text(text);
+            $('#msg1').notificationmsg({animation:animStyle});
+            $('#msg1').notificationmsg('show');
+        }
+    </script>
+
+
+    <div id="msg1">
+        <div id="modal">
+            <div class="modaltop">
+                <div class="modaltitle">Notification</div>
+                    <span id="closebutton" style="cursor:pointer">
+                        <img alt="Hide Popup" src="/img/ssim/close_vista.gif" width="28" height="15" border="0" />
+                    </span>
+                </div>
+            <div class="modalbody" id="modalbody">
+                Form saved
+            </div>
+        </div>
+    </div>
+    <!-- End of Notification block -->
+
   </body>
   <script>
         $(document).ready(function() {

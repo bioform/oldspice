@@ -122,6 +122,7 @@ def config_sensor(request, address, productID, config_name, sensor_name):
     # check request method
     form = None
     refresh_sensor_list = False
+    is_sensor_saved = False
     if request.method == 'GET':
         form = form_clazz()
     elif request.method == 'POST':
@@ -130,6 +131,7 @@ def config_sensor(request, address, productID, config_name, sensor_name):
             saved_sensor_name, sensor_xml = form.update_xml()
             # save data
             configuration.update_settings(ldap_connection, sensor_config.dn, sensor_xml)
+            is_sensor_saved = True
             if not sensor_name:
                 sensor_name = saved_sensor_name
                 refresh_sensor_list = True
@@ -140,8 +142,31 @@ def config_sensor(request, address, productID, config_name, sensor_name):
         'form':form,
         'address':address,
         'action':request.path,
-        'update_item_list':refresh_sensor_list,},
+        'update_item_list':refresh_sensor_list,
+        'sensor_saved':is_sensor_saved},
         mimetype="text/html")
+
+def change_sensor_status(request, address, productID, config_name, sensor_name):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+
+    configDN = request.POST.get('configDN', None)
+    config = None;
+    try:
+        if configDN == None:
+            ldap_info = request.session['ldap'][address]
+            (product_instance, config_root, config) = configuration.get_config_by_name(ldap_connection, ldap_info['domain'], productID, config_name)
+        else:
+            config = configuration.get_config_by_dn(ldap_connection, configDN)
+    except Exception as ex:
+        print "Error while getting sensor status: ", ex
+
+    sensor_config = configuration.get_sensor_config(ldap_connection, config)
+    status, sensor_xml = sensor.change_status(sensor_config.data, sensor_name)
+    # save data
+    configuration.update_settings(ldap_connection, sensor_config.dn, sensor_xml)
+    
+    return HttpResponse(status,
+            mimetype='text/plain')
 
 def config_sensors(request, address, productID, config_name, selected_sensor):
     ldap_connection = utils.get_ldap_connection(request.session, address)
@@ -165,6 +190,7 @@ def config_sensors(request, address, productID, config_name, selected_sensor):
     return render_to_response('ssim/config/sensors.html', {
                 'productID':productID,
                 'config':config,
+                'sensor_config': sensor_config,
                 'sensors':sensor_list,
                 'first_link':first_sensor,
                 'selected_link':selected_sensor,

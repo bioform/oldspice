@@ -30,20 +30,37 @@
     width: 20em;
 }
 
-.link_list {
-    padding:0;
-    margin:0;
-}
-.link_list li {
+.item_list {
     padding:0;
     margin:0;
     list-style:none;
 }
-
-.link_list li a{
-    font-weight:bold;
-    white-space:nowrap;
+.item_list li {
+    padding:0;
+    margin:0;
+    line-height:16px;
+    height:16px;
+    white-space:nowrap !important;
 }
+.item_status {
+    float:left;
+    width:16px;
+    line-height:16px;
+    overflow:hidden;
+}
+
+.item_status span {
+    padding:16px;
+}
+
+.enabled {
+    background-image: url(../../img/ssim/checkbox_checked.gif);
+}
+
+.disabled {
+    background-image: url(../../img/ssim/checkbox_unchecked.gif);
+}
+
 
 a.selected {
     background-color: rgb(230,230,230)

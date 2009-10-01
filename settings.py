@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 	'django.contrib.admin',
 	'symantec.machines',
+        'symantec.ssim',
 	'symantec.authuser',
 	'symantec.django_sorting'
 )

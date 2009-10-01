@@ -1,8 +1,11 @@
+{% load ssim_extras %}
+
 <div style="height:26em;overflow:auto;border:inset thin;background-color:white;padding:2px;">
-    <ul class="link_list">
+    <ul class="item_list">
         {% for sensor in sensors %}
             <li>
-                <a id="sensor_{{ sensor.name }}" name="{{ sensor.name }}" href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}">{{ sensor.name }}</a>
+                <a href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}/change-status" class="item_status {{ sensor|status }}"><span>{{ sensor|status }}</span></a>
+                <a id="sensor_{{ sensor.name }}" class="item_link" name="{{ sensor.name }}" href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}">{{ sensor.name }}</a>
             </li>
         {% endfor %}
     </ul>
@@ -25,7 +28,7 @@
         event.preventDefault();
         // get selected sensor
         var selected_item = null;
-        $('.link_list a').each(function(i, item){
+        $('.item_list a.item_link').each(function(i, item){
             if( $(item).is('.selected') ){
                 selected_item = $(item);
             }
@@ -40,13 +43,41 @@
 
 {% if first_link %}
 <script>
+    var sensor_config_dn = '{{ sensor_config.dn }}';
+    var config_dn = '{{ config.dn }}';
+
     var select_and_load_item = function(event){
         event.preventDefault();
         select_item($(this));
         load_data($(this).attr('href'), '#sensor');
     }
 
-    $('.link_list a').click(select_and_load_item);
+    $('.item_list a.item_link').click(select_and_load_item);
+
+    var change_item_status = function(event){
+         event.preventDefault();
+         var address = $(this).attr('href');
+         data = {'configDN':config_dn,'sensor_configDN':sensor_config_dn}
+        // store value in data variable
+        $.ajaxSetup({ cache: false });
+        $.post(address,data,
+            function(data){
+                if( data == 'enabled' ){
+                    $(this).removeClass('disabled');
+                    $(this).addClass('enabled');
+                }
+                else if( data == 'disabled' ){
+                    $(this).removeClass('enabled');
+                    $(this).addClass('disabled');
+                }
+                else {
+                    alert(data);
+                }
+            }
+        );
+        return false;
+    }
+    $('.item_list a.item_status').click(change_item_status);
 </script>
 {% endif %}
 
@@ -59,7 +90,7 @@
 {% else %}{% if first_link %}
     <script>
         $(document).ready(function() {
-                $('.link_list a:first').click();
+                $('.item_list a.item_link:first').click();
             });
     </script>
 {% endif %}{% endif %}

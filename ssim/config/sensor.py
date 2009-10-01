@@ -9,7 +9,7 @@ selectWidget = forms.Select(attrs={'class':'ui-widget-content ui-corner-all'})
 checkboxWidget = forms.CheckboxInput(attrs={'class':'text ui-widget-content ui-corner-all'})
 
 class Sensor:
-    def __init__(self, name = 'Undefined', enabled = False, fields = None):
+    def __init__(self, name = 'Undefined', enabled = 'false', fields = None):
         if fields is None:
             fields = []
         self.name = name
@@ -114,6 +114,27 @@ def delete_all_childs(node):
     if node.childNodes:
         for child in node.childNodes:
             node.removeChild(child)
+
+def change_status(sensor_xml, sensor_name):
+    #parse XML
+    dom = parseString(sensor_xml)
+    # default status
+    new_status = 'disabled'
+    #get all sensors
+    sensor_nodes = dom.getElementsByTagName("sensor")
+    for item in sensor_nodes:
+        name = item.getAttribute('name')
+        if name == sensor_name:
+            enabled = item.getAttribute('enabled')
+            if enabled == 'True' or enabled == 'True':
+                item.setAttribute('enabled', 'false')
+                new_status = 'disabled'
+            else:
+                item.setAttribute('enabled', 'true')
+                new_status = 'enabled'
+            break
+
+    return new_status, dom.toxml()
 
 def remove_sensor_from_xml(sensor_xml, sensor_name):
     #parse XML

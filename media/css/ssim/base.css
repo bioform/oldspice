@@ -50,19 +50,18 @@ body {
 }
 
 
-  #mainmenu {
+#mainmenu {
     overflow-x:hidden;
     overflow-y:auto;
-  }
-  #content {
+}
+#content {
     overflow: auto;
-  }
+}
 
-  #mainmenu ul{
-      margin:0;
-      padding-left: 20px ;
-      
-  }
+#mainmenu ul{
+    margin:0;
+    padding-left: 20px ;      
+}
   #mainmenu ul li{
       margin:0;
       padding: .3em 0em;

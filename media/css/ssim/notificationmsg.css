@@ -1,0 +1,39 @@
+#msg1
+{
+    bottom: 0px;
+    right: 0px;
+    position:fixed;
+    z-index:1000;
+    width:200px;
+    height: 100px;
+    border: solid 1px black;
+    margin: 0px 0px 0px 20px;
+    background-color:white;
+    display:none;
+    font-size:13px;
+}
+
+#modal .modaltop
+{
+    width: 192px;
+    background-color: Transparent;
+    background-image: url(../../img/ssim/bg.gif);
+    background-repeat: repeat-x;
+    padding: 4px;
+    color: #ffffff;
+    text-align: right;
+}
+#modal .modaltitle
+{
+    padding: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    float:left;
+}
+
+#modal .modalbody
+{
+    padding: 10px;
+    text-align: left;
+}

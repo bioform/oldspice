@@ -86,10 +86,14 @@ function showResponse(responseText, statusText)  {
 
     // если применяется метод ajaxSubmit (или ajaxForm) с использованием опции dataType
     // установленной в 'json', первый аргумент - объек json, возвращенный сервером.
-    if( statusText == 'success' ){
-        alert('Form is saved')
-    } else {
+    if( statusText != 'success' ){
         alert('Server status: ' + statusText + '\n\nServer response: \n' + responseText);
     }
 }
 </script>
+
+{% if sensor_saved %}
+    <script>
+        notify('Sensor saved')
+    </script>
+{% endif %}

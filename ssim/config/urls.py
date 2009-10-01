@@ -9,5 +9,6 @@ urlpatterns = patterns('symantec.ssim.config.views',
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/sensors/(?P<selected_sensor>.*)$', 'config_sensors'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/sensor/(?P<sensor_name>[^/]*)$', 'config_sensor'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/sensor/(?P<sensor_name>[^/]+)/delete$', 'delete_sensor'),
+    (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/sensor/(?P<sensor_name>[^/]+)/change-status$', 'change_sensor_status'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>[^/]+)/$', 'config_by_name'),
 )
