@@ -46,7 +46,7 @@ def products(request, address, client = None):
     return render_to_response('ssim/products.html', {'products':product_list, 'address':address},
         mimetype="text/html")
 
-def config_by_product_id(request, address, productID = None):
+def config_by_product_id(request, address, productID, message = None):
     ldap_connection = utils.get_ldap_connection(request.session, address)
     ldap_info = request.session['ldap'][address]
     (product_instance, config_root, config_list) = configuration.configurations(ldap_connection, ldap_info['domain'], productID)
@@ -62,6 +62,18 @@ def client_products(request, address, client = None):
     products = product.client_products(ldap_connection, locationDN)
     return render_to_response('ssim/client_products.html', {'products':products, 'address':address},
         mimetype="text/html")
+
+
+def create_config(request, address, productID, config_name):
+    try:
+        ldap_connection = utils.get_ldap_connection(request.session, address)
+        ldap_info = request.session['ldap'][address]
+        new_config_name = config_name.encode("utf-8")
+        result = configuration.copy_dafault_config(ldap_connection, ldap_info['domain'], productID, new_config_name)
+    except Exception as ex:
+        return config_by_product_id(request, address, productID, ex)
+
+    return config_by_product_id(request, address, productID)
 
 def login(request, address):
     # If this isn't already the login page, display it.

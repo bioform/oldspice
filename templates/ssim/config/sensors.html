@@ -1,7 +1,7 @@
 {% load ssim_extras %}
 
 <div style="height:26em;overflow:auto;border:inset thin;background-color:white;padding:2px;">
-    <ul class="item_list">
+    <ul id="sensor_list" class="item_list">
         {% for sensor in sensors %}
             <li>
                 <a href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/{{ sensor.name }}/change-status" class="item_status {{ sensor|status }}"><span>{{ sensor|status }}</span></a>
@@ -11,24 +11,24 @@
     </ul>
 </div>
 
-<div class="fg-toolbar ui-helper-clearfix">
+<div class="fg-toolbar ui-helper-clearfix" id="sensor_list_toolbar">
         <a id="add"    href="/ssim/config/{{ address }}/product/{{ productID }}/config/{{ config.name }}/sensor/" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Add new sensor"><span class="ui-icon ui-icon-plus"></span> Add</a>
         <a id="remove" href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Remove sensor"><span class="ui-icon ui-icon-minus"></span> Remove</a>
 </div>
 
 
 <script>
-    $('#add').click(function(event){
+    $('#sensor_list_toolbar #add').click(function(event){
         event.preventDefault();
         load_data($(this).attr('href'), '#sensor')
         select_item(null);
         return false;
     });
-    $('#remove').click(function(event){
+    $('#sensor_list_toolbar #remove').click(function(event){
         event.preventDefault();
         // get selected sensor
         var selected_item = null;
-        $('.item_list a.item_link').each(function(i, item){
+        $('#sensor_list a.item_link').each(function(i, item){
             if( $(item).is('.selected') ){
                 selected_item = $(item);
             }
@@ -43,8 +43,8 @@
 
 {% if first_link %}
 <script>
-    var sensor_config_dn = '{{ sensor_config.dn }}';
-    var config_dn = '{{ config.dn }}';
+    var sensor_config_dn = '{{ sensor_config.dn|escapejs }}';
+    var config_dn = '{{ config.dn|escapejs }}';
 
     var select_and_load_item = function(event){
         event.preventDefault();
@@ -52,23 +52,24 @@
         load_data($(this).attr('href'), '#sensor');
     }
 
-    $('.item_list a.item_link').click(select_and_load_item);
+    $('#sensor_list a.item_link').click(select_and_load_item);
 
     var change_item_status = function(event){
          event.preventDefault();
-         var address = $(this).attr('href');
+         var item = $(this)
+         var address = item.attr('href');
          data = {'configDN':config_dn,'sensor_configDN':sensor_config_dn}
         // store value in data variable
         $.ajaxSetup({ cache: false });
         $.post(address,data,
             function(data){
                 if( data == 'enabled' ){
-                    $(this).removeClass('disabled');
-                    $(this).addClass('enabled');
+                    item.removeClass('disabled');
+                    item.addClass('enabled');
                 }
                 else if( data == 'disabled' ){
-                    $(this).removeClass('enabled');
-                    $(this).addClass('disabled');
+                    item.removeClass('enabled');
+                    item.addClass('disabled');
                 }
                 else {
                     alert(data);
@@ -77,7 +78,7 @@
         );
         return false;
     }
-    $('.item_list a.item_status').click(change_item_status);
+    $('#sensor_list a.item_status').click(change_item_status);
 </script>
 {% endif %}
 
@@ -90,7 +91,7 @@
 {% else %}{% if first_link %}
     <script>
         $(document).ready(function() {
-                $('.item_list a.item_link:first').click();
+                $('#sensor_list a.item_link:first').click();
             });
     </script>
 {% endif %}{% endif %}

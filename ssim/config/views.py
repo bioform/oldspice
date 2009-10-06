@@ -47,8 +47,6 @@ def config_general(request, address, productID, config_name):
     else:
         config = configuration.get_config_by_dn(ldap_connection, configDN)
 
-
-
     if request.method == 'GET':
         data = {'name':config.name,
                 'desc':config.desc,
@@ -147,24 +145,23 @@ def config_sensor(request, address, productID, config_name, sensor_name):
         mimetype="text/html")
 
 def change_sensor_status(request, address, productID, config_name, sensor_name):
-    ldap_connection = utils.get_ldap_connection(request.session, address)
-
-    configDN = request.POST.get('configDN', None)
-    config = None;
     try:
+        ldap_connection = utils.get_ldap_connection(request.session, address)
+
+        configDN = request.POST.get('configDN', None)
+        config = None;
         if configDN == None:
             ldap_info = request.session['ldap'][address]
             (product_instance, config_root, config) = configuration.get_config_by_name(ldap_connection, ldap_info['domain'], productID, config_name)
         else:
             config = configuration.get_config_by_dn(ldap_connection, configDN)
-    except Exception as ex:
-        print "Error while getting sensor status: ", ex
 
-    sensor_config = configuration.get_sensor_config(ldap_connection, config)
-    status, sensor_xml = sensor.change_status(sensor_config.data, sensor_name)
-    # save data
-    configuration.update_settings(ldap_connection, sensor_config.dn, sensor_xml)
-    
+        sensor_config = configuration.get_sensor_config(ldap_connection, config)
+        status, sensor_xml = sensor.change_status(sensor_config.data, sensor_name)
+        # save data
+        configuration.update_settings(ldap_connection, sensor_config.dn, sensor_xml)
+    except Exception as ex:
+        status = ex
     return HttpResponse(status,
             mimetype='text/plain')
 

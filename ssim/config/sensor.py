@@ -126,7 +126,7 @@ def change_status(sensor_xml, sensor_name):
         name = item.getAttribute('name')
         if name == sensor_name:
             enabled = item.getAttribute('enabled')
-            if enabled == 'True' or enabled == 'True':
+            if enabled in [True, 'True', 'true']:
                 item.setAttribute('enabled', 'false')
                 new_status = 'disabled'
             else:

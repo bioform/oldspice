@@ -1,4 +1,6 @@
 import ldap
+import uuid
+import re
 from symantec.ssim.utils import ldaphelper
 from symantec.ssim.utils.ldaphelper import LDAPSearchResult
 from symantec.ssim.utils import product
@@ -6,9 +8,12 @@ from datetime import datetime
 
 CONFIGURATION_ATTRS = ['dlmName','symcValid','dlmDescription','dlmSettingContextSettingRef','symcElementConfigurationElementRef', 'symcSequenceRevision']
 SETTINGS_ATTRS = ['dlmCaption','binProperty','binPropertyType','dlmDescription','dlmSettingID','symcMetaData', 'symcSequenceRevision', 'symcValid']
+CONFIG_SPECIFIED_ATTRS = ['dlmSettingContextSettingRef', 'orderedCimKeys', 'dlmCaption', 'dlmDescription', 'symcSequenceName', 'dlmName', 'symcElementConfigurationElementRef']
+SETTINGS_SPECIFIED_ATTRS = ['dlmSettingID', 'symcSequenceName', 'orderedCimKeys']
 
 class Configuration:
     def __init__(self, search_result):
+        self.search_result = search_result;
         self.dn = search_result.get_dn()
         self.name = search_result.get_attr_values('dlmName')[0]
 
@@ -18,7 +23,12 @@ class Configuration:
             self.desc = ''
 
         self.settings = search_result.get_attr_values('dlmSettingContextSettingRef')
-        self.elements = search_result.get_attr_values('symcElementConfigurationElementRef')
+        
+        if search_result.has_attribute('symcElementConfigurationElementRef'):
+            self.elements = search_result.get_attr_values('symcElementConfigurationElementRef')
+        else:
+            self.elements = None;
+
         if  search_result.has_attribute('symcSequenceRevision'):
             self.updated_at = search_result.get_attr_values('symcSequenceRevision')[0]
             self.updated_at = ldaphelper.parse_generalized_time(self.updated_at)
@@ -102,6 +112,69 @@ def get_config_by_dn(l, configDN):
     attrs = CONFIGURATION_ATTRS
     raw_res = l.search_s( configDN, ldap.SCOPE_BASE, filter, attrs)
     return Configuration(LDAPSearchResult(raw_res[0]))
+
+def get_default_config(l, base_dn, productID):
+    # get root config
+    product_instance, config_dn = get_config_root(l, base_dn, productID)
+    filter = '(&(!(objectclass=symc1ElementConfiguration))(dlmName=Default))'
+    raw_res = l.search_s( "cn=Configs,%s" % config_dn, ldap.SCOPE_SUBTREE, filter)
+    return product_instance, config_dn, Configuration(LDAPSearchResult(raw_res[0]))
+
+def copy_dafault_config(l, base_dn, productID, new_config_name):
+    product_instance, config_dn, config = get_default_config(l, base_dn, productID)
+    new_config_dn = config.dn.replace(config.name, new_config_name, 1)
+    #create config for all tabs
+    all_settings_dn = []
+    for setting_dn in config.settings:
+        all_settings_dn += [duplicate_settings(l, setting_dn)]
+    #create config
+    add_record = [
+                    ('objectclass', 'symc1ElementConfiguration'),
+                    ('objectclass', 'symc1ElementConfigurationAuxClass'),
+                    ('dlmCaption', new_config_name),
+                    ('dlmName', new_config_name),
+                    ('orderedCimKeys', "CIM_Configuration.Name=%s" % new_config_name),
+                 ]
+    # add settings references
+    for setting_dn in all_settings_dn:
+        add_record += [('dlmSettingContextSettingRef', setting_dn)]
+    # copy all attributes
+    search_result = config.search_result
+    for attr in search_result.get_attr_names():
+        if attr not in CONFIG_SPECIFIED_ATTRS:
+            for value in search_result.get_attr_values(attr):
+                add_record += [(attr, value)]
+
+    print "===>", add_record
+    l.add_s(new_config_dn, add_record)
+    return new_config_dn
+
+def duplicate_settings(l, setting_dn):
+    new_uid = str(uuid.uuid1())
+    new_orderedCimKeys = 'Symc_Setting.SettingID=%s' % new_uid
+    # create new settings DN
+    dn_suffix = re.match('.+?(,.+)', setting_dn)
+    new_setting_dn = 'orderedCimKeys=' + new_orderedCimKeys.replace('=','\=') + dn_suffix.group(1)
+    #new_setting_dn = new_setting_dn.replace('-','')
+    # prepare new settings attributes
+    add_record = [
+                    ('dlmSettingID', new_uid),
+                    ('symcSequenceName', new_uid),
+                    ('orderedCimKeys', new_orderedCimKeys),
+                 ]
+    #get all attributes
+    filter = '(objectclass=*)'
+    raw_res = l.search_s( setting_dn, ldap.SCOPE_BASE, filter)
+    search_result = ldaphelper.get_search_results( raw_res )[0]
+    # add all attributes to new record
+    for attr in search_result.get_attr_names():
+        if attr not in SETTINGS_SPECIFIED_ATTRS:
+            for value in search_result.get_attr_values(attr):
+                add_record += [(attr, value)]
+                
+    l.add_s(new_setting_dn, add_record)
+    
+    return new_setting_dn
 
 def get_all_settings(l, config):
     all_settings = []

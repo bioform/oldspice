@@ -1,15 +1,41 @@
 <div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">Configurations</div>
-<div>
-    <ul>
+<div style="padding:10px;">
+    <ul class="item_list" id="config_list">
         {% for config in configurations %}
             <li>
+                <a href="#" class="item_status disabled" style="margin-right:10px;"><span>checkbox</span></a>
                 <a class="content_list" href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/" configDN="{{ config.dn }}">{{ config.name }}</a>
             </li>
         {% endfor %}
     </ul>
+    <br/>
+    {% include 'ssim/config_list_toolbar.html' %}
 </div>
 
 <script>
+    $(SetupButtons);
+</script>
+
+<script>
+    var change_checkbox_state = function(event){
+        event.preventDefault();
+        var item = $(this)
+        if( item.is('.disabled') ){
+            item.removeClass('disabled');
+            item.addClass('enabled');
+        }
+        else if( item.is('.enabled') ){
+            item.removeClass('enabled');
+            item.addClass('disabled');
+        }
+        else {
+            alert(data);
+        }
+        return false;
+    }
+    $('#config_list a.item_status').click(change_checkbox_state);
+
+
     $('.content_list').click(function(event){
         event.preventDefault();
         post($(this).attr('href'), '#content',{'configDN':$(this).attr('configDN')})

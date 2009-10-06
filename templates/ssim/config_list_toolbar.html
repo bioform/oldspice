@@ -1,0 +1,115 @@
+<div class="fg-toolbar ui-helper-clearfix" id="config_list_toolbar">
+    <a id="add"    href="/ssim/{{ address }}/product/{{ product.productID }}/create-config/" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Add new configuration"><span class="ui-icon ui-icon-plus"></span> Add</a>
+    <a id="remove" href="#" class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all" title="Remove configuration"><span class="ui-icon ui-icon-minus"></span> Remove</a>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$("#delete_config_dialog").dialog({
+			bgiframe: true,
+                        autoOpen: false,
+			resizable: false,
+			height: 180,
+			modal: true,
+			overlay: {
+				backgroundColor: '#000',
+				opacity: 0.5
+			},
+			buttons: {
+				'Delete': function() {
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+	});
+
+        var name = $("#name"), allFields = $([]).add(name), tips = $("#validateTips");
+
+
+        function updateTips(t) {
+                tips.text(t).effect("highlight",{},1500);
+        }
+
+        function checkLength(o,n,min,max) {
+
+                if ( o.val().length > max || o.val().length < min ) {
+                        o.addClass('ui-state-error');
+                        updateTips("Length of " + n + " must be between "+min+" and "+max+".");
+                        return false;
+                } else {
+                        return true;
+                }
+
+        }
+
+        function checkRegexp(o,regexp,n) {
+
+                if ( !( regexp.test( o.val() ) ) ) {
+                        o.addClass('ui-state-error');
+                        updateTips(n);
+                        return false;
+                } else {
+                        return true;
+                }
+        }
+
+        $("#create_config_dialog").dialog({
+                bgiframe: true,
+                autoOpen: false,
+                height: 200,
+                modal: true,
+                buttons: {
+                        'Create a configuration': function() {
+                                var bValid = true;
+                                allFields.removeClass('ui-state-error');
+
+                                bValid = bValid && checkLength(name,"name",3,16);
+                                bValid = bValid && checkRegexp(name,/^[a-z]([0-9a-z_])+$/i,"\"Name\" may consist of a-z, 0-9, underscores, begin with a letter.");
+                                if (bValid) {
+                                        var button = $('#config_list_toolbar #add')
+                                        load_data(button.attr('href') + name.val(), '#content');
+                                        $(this).dialog('close');
+                                }
+                        },
+                        Cancel: function() {
+                                $(this).dialog('close');
+                        }
+                },
+                close: function() {
+                        allFields.val('').removeClass('ui-state-error');
+                }
+        });
+
+</script>
+
+
+<div id="delete_config_dialog" title="Delete selected configurations ?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Selected confugurations will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="create_config_dialog" title="Create new configuration">
+	<p id="validateTips">Field "Name" is required.</p>
+
+	<form>
+
+		<label for="name">Name</label>
+		<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+
+	</form>
+</div>
+
+<script>
+    $('#config_list_toolbar #add').click(function(event){
+        event.preventDefault();
+        $('#create_config_dialog').dialog('open');
+        return false;
+    });
+    $('#config_list_toolbar #remove').click(function(event){
+        event.preventDefault();
+        $('#delete_config_dialog').dialog('open');
+        return false;
+    });
+</script>
