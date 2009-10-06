@@ -1,0 +1,76 @@
+<form id="agents_tab_form" action="{{ action }}" method="POST" style="height:30em;">
+
+<table class="selectbox">
+    <thead>
+        <tr>
+            <th>Available Agents</th>
+            <th></th>
+            <th>Selected Agents</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+         <td>
+          <select id="available_agents" size=10
+           onDblClick="$(this).copyOptions('#agents').removeOption(/./, true)">
+
+           {% for agent in all_agents %}
+            <option value="{{ agent.dn }}">{{ agent.name }}</option>
+           {% endfor %}
+          </select>
+         </td>
+         <td>
+          <button onClick="$('#available_agents').copyOptions('#agents').removeOption(/./, true)" type="button"
+                  class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all"><span class="ui-icon ui-icon-plus"></span> Add</button>
+          <button onClick="$('#agents').copyOptions('#available_agents').removeOption(/./, true)" type="button"
+                  class="fg-button ui-state-default fg-button-icon-solo  ui-corner-all"><span class="ui-icon ui-icon-minus"></span> Remove</button>
+         </td>
+         <td>
+          <select id="agents" name="agents" size=10
+           onDblClick="$(this).copyOptions('#available_agents').removeOption(/./, true)">
+
+           {% for agent in agents %}
+            <option value="{{ agent.dn }}">{{ agent.name }}</option>
+           {% endfor %}
+
+          </select>
+         </td>
+        </tr>
+</tbody>
+</table>
+
+<br/>
+
+<input type="submit" value="Submit" class="fg-button ui-state-default ui-corner-all">
+<input type="reset" value="Reset" class="fg-button ui-state-default ui-corner-all">
+
+    
+</form>
+
+<script>
+    $(SetupButtons);
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+// ---- Форма -----
+  var options = {
+    // элемент, который будет обновлен по ответу сервера
+    target: $('#agents_tab_form').parent(),
+    success: showResponse, // функция, вызываемая при получении ответа
+    timeout: 3000 // тайм-аут
+  };
+
+  $('#agents_tab_form').submit(function() {
+    $(this).ajaxSubmit(options);
+    return false;
+  });
+// ---- Форма -----
+});
+
+function showResponse(responseText, statusText)  {
+    if( statusText != 'success' ){
+        alert('Server status: ' + statusText + '\n\nServer response: \n' + responseText);
+    }
+}
+</script>

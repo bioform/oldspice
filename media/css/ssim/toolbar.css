@@ -4,7 +4,9 @@
 a.fg-button { float:left;}
 
 /* remove extra button width in IE */
-button.fg-button { width:auto; overflow:visible; }
+button.fg-button { width:auto; overflow:visible;}
+button.fg-button-icon-solo { width:22px; padding: 0;}
+button.fg-button-icon-solo span.ui-icon{ margin-left: -11px;}
 
 .fg-button-icon-left { padding-left: 2.1em; }
 .fg-button-icon-right { padding-right: 2.1em; }

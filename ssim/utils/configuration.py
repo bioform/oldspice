@@ -25,7 +25,12 @@ class Configuration:
         self.settings = search_result.get_attr_values('dlmSettingContextSettingRef')
         
         if search_result.has_attribute('symcElementConfigurationElementRef'):
-            self.elements = search_result.get_attr_values('symcElementConfigurationElementRef')
+            self.elements = []
+            refs = search_result.get_attr_values('symcElementConfigurationElementRef')
+            for ref in refs:
+                dlmName = re.match('dlmName=(.+?),.+', ref)
+                self.elements += [dlmName.group(1)]
+            print "===>", self.elements
         else:
             self.elements = None;
 

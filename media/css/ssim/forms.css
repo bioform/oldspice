@@ -65,3 +65,11 @@
 a.selected {
     background-color: rgb(230,230,230)
 }
+
+table.selectbox {
+    border:none;
+}
+
+table.selectbox select {
+    width: 20em;
+}

@@ -197,3 +197,26 @@ def config_sensors(request, address, productID, config_name, selected_sensor):
 
 def config_options(request, address, productID, config_name):
     pass
+
+def config_agents(request, address, productID, config_name):
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+
+    configDN = request.POST.get('configDN', None)
+    config = None;
+    if configDN == None:
+        ldap_info = request.session['ldap'][address]
+        (product_instance, config_root, config) = configuration.get_config_by_name(ldap_connection, ldap_info['domain'], productID, config_name)
+    else:
+        config = configuration.get_config_by_dn(ldap_connection, configDN)
+
+    ldap_connection = utils.get_ldap_connection(request.session, address)
+    ldap_info = request.session['ldap'][address]
+    all_agents = location.all(ldap_connection, ldap_info['domain'])
+    agents = location.all(ldap_connection, ldap_info['domain'], config.elements)
+
+    return render_to_response('ssim/config/agents-tab.html', {'productID':productID,
+        'config':config,
+        'all_agents': all_agents,
+        'agents': agents,
+        'action':request.path},
+        mimetype="text/html")
