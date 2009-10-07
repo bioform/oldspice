@@ -17,6 +17,7 @@ import sys
 
 from symantec.ssim.config.general import GeneralForm
 from symantec.ssim.config import sensor
+from symantec.ssim.config import agents
 from symantec.ssim.config import general
 
 def index(request, address = None):
@@ -209,14 +210,19 @@ def config_agents(request, address, productID, config_name):
     else:
         config = configuration.get_config_by_dn(ldap_connection, configDN)
 
-    ldap_connection = utils.get_ldap_connection(request.session, address)
+    #save data
+    if request.method == 'POST':
+        agents.save(ldap_connection, config, request.POST.getlist('agents'))
+
+    #get all agents and agents references
     ldap_info = request.session['ldap'][address]
     all_agents = location.all(ldap_connection, ldap_info['domain'])
-    agents = location.all(ldap_connection, ldap_info['domain'], config.elements)
-
+    linked_agents = location.all(ldap_connection, ldap_info['domain'], config.elements_names)
+    
     return render_to_response('ssim/config/agents-tab.html', {'productID':productID,
         'config':config,
         'all_agents': all_agents,
-        'agents': agents,
+        'agents': linked_agents,
+        'address': address,
         'action':request.path},
         mimetype="text/html")

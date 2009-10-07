@@ -25,20 +25,34 @@ class Configuration:
         self.settings = search_result.get_attr_values('dlmSettingContextSettingRef')
         
         if search_result.has_attribute('symcElementConfigurationElementRef'):
+            self.elements_names = []
             self.elements = []
             refs = search_result.get_attr_values('symcElementConfigurationElementRef')
             for ref in refs:
+                self.elements += [ref]
                 dlmName = re.match('dlmName=(.+?),.+', ref)
-                self.elements += [dlmName.group(1)]
-            print "===>", self.elements
+                self.elements_names += [dlmName.group(1)]
         else:
-            self.elements = None;
+            self.elements_names = [];
+            self.elements = [];
 
         if  search_result.has_attribute('symcSequenceRevision'):
             self.updated_at = search_result.get_attr_values('symcSequenceRevision')[0]
             self.updated_at = ldaphelper.parse_generalized_time(self.updated_at)
         else:
             self.updated_at = datetime.now()
+
+    def add_element(self, ref):
+        self.elements += [ref]
+        dlmName = re.match('dlmName=(.+?),.+', ref)
+        self.elements_names += [dlmName.group(1)]
+
+    def remove_element(self, ref):
+        if ref in self.elements:
+            self.elements.remove(ref)
+        dlmName = re.match('dlmName=(.+?),.+', ref).group(1)
+        if dlmName in self.elements_names:
+            self.elements_names.remove(dlmName)
 
     def __str__(self):
         return self.name
