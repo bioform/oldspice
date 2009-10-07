@@ -13,6 +13,15 @@ class Location:
         self.install_date = search_result.get_attr_values('dlmInstallDate')[0]
         self.install_date = ldaphelper.parse_generalized_time(self.install_date)
 
+    def __eq__(self,other):
+        if other != None and self.dn == other.dn:
+            return True
+        else:
+            return False
+    
+    def __hash__(self):
+        return hash(self.dn)
+
     def __str__(self):
         return self.host
 

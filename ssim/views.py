@@ -132,27 +132,4 @@ def ldap_authenticate(request):
     address  = request.POST.get('address')
     login    = request.POST.get('username')
     password = request.POST.get('password')
-    # Serialize the result of the database retrieval to JSON and send an application/json response
-    xml = utils.get_auth_xml(address,login,password);
-    if len(xml) == 0:
-        raise DefaultDomainException, "Illegal SSIM XML response. See log files."
-
-    dom = parseString(xml)
-    infos = dom.getElementsByTagName("sessionInfo")
-    if len(infos) == 1:
-        info = infos[0]
-        domain = "dc={0[0]},dc={0[1]},o=symc_ses".format(info.getAttribute('domain').split('.'))
-        request.session['ldap'] = {address:{
-            'domain':domain,
-            'userDN':info.getAttribute('userDN'),
-            'address':address,
-            'login':login,
-            'password':password,
-        }}
-        l = utils.get_ldap_connection(request.session, address)
-    else:
-        infos = dom.getElementsByTagName("status")
-        if len(infos) == 1:
-            raise DefaultDomainException, "%s" % (infos[0].getAttribute('errorMessage'),)
-        else:
-            raise DefaultDomainException, "Illegal SSIM response: %s" % (xml,)
+    utils.ldap_authenticate(request.session, address, login, password)

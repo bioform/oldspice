@@ -211,13 +211,26 @@ def config_agents(request, address, productID, config_name):
         config = configuration.get_config_by_dn(ldap_connection, configDN)
 
     #save data
+    params = request.GET
     if request.method == 'POST':
+        params = request.POST
         agents.save(ldap_connection, config, request.POST.getlist('agents'))
+
+    if params.get('distribute', None):
+        #distribute config
+        pass
 
     #get all agents and agents references
     ldap_info = request.session['ldap'][address]
     all_agents = location.all(ldap_connection, ldap_info['domain'])
-    linked_agents = location.all(ldap_connection, ldap_info['domain'], config.elements_names)
+    linked_agents = []
+    if len(config.elements_names) > 0:
+        linked_agents = location.all(ldap_connection, ldap_info['domain'], config.elements_names)
+
+    # filter all_agents
+    for item in linked_agents:
+        if item in all_agents:
+            all_agents.remove(item)
     
     return render_to_response('ssim/config/agents-tab.html', {'productID':productID,
         'config':config,
