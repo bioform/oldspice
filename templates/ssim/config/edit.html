@@ -9,6 +9,14 @@
 
 <div class="frame-header ui-widget-header ui-corner-all ui-helper-clearfix">
     Configuration {{ config.name }} ({{ product.name }})
+    <span style="margin-right:5px;float:right;">
+        <a id="distribute" href="/ssim/config/{{ address }}/product/{{ product.productID }}/config/{{ config.name }}/distribute"
+           configDN="{{ config.dn }}"
+           class="fg-button ui-state-default ui-corner-all" style="padding:0px 10px 1px 10px;margin:0;"
+           title="Distribute Configuration">
+            distribute
+        </a>
+    </span>
 </div>
 
 <div id="tabs">
@@ -45,3 +53,41 @@
             </li>
 	</ul>
 </div>
+
+<script>
+    var distribute_config = function(address){
+        // store value in data variable
+        var data = {};
+        $.ajaxSetup({ cache: false });
+        $.get(address,data,
+            function(data){
+                if(data == 'success'){
+                    notify('Configuration was distributed')
+                } else {
+                    alert(data);
+                }
+            }
+        );
+        return false;
+    }
+
+    $('#distribute').click(function(event){
+        event.preventDefault();
+        // store value in data variable
+        var configDN = $(this).attr('configDN');
+        var data = {'configDN':configDN};
+        address = $(this).attr('href');
+        $.ajaxSetup({ cache: false });
+        $.post(address,data,
+            function(data){
+                if(data == 'success'){
+                    notify('Configuration was distributed')
+                } else {
+                    alert(data);
+                }
+            }
+        );
+        return false;
+    });
+    
+</script>

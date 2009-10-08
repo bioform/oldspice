@@ -1,24 +1,18 @@
 from django.http import HttpResponse
-from django import template
 from django.shortcuts import render_to_response
-from django.utils.translation import ugettext_lazy, ugettext as _
-import ldap
-from xml.dom.minidom import parse, parseString
 
 from symantec.ssim.utils import helper as utils
 from symantec.ssim.utils import location
-from symantec.ssim.utils import product
 from symantec.ssim.utils import configuration
 
 from symantec.ssim.exceptions import *
-from datetime import datetime
 from django.shortcuts import redirect
-import sys
 
 from symantec.ssim.config.general import GeneralForm
 from symantec.ssim.config import sensor
 from symantec.ssim.config import agents
 from symantec.ssim.config import general
+from symantec.ssim.exceptions import *
 
 def index(request, address = None):
 
@@ -199,6 +193,28 @@ def config_sensors(request, address, productID, config_name, selected_sensor):
 def config_options(request, address, productID, config_name):
     pass
 
+def distribute_config(request, address, productID, config_name):
+    status = 'success'
+    try:
+        ldap_connection = utils.get_ldap_connection(request.session, address)
+
+        configDN = request.POST.get('configDN', None)
+        config = None;
+        if configDN == None:
+            ldap_info = request.session['ldap'][address]
+            (product_instance, config_root, config) = configuration.get_config_by_name(ldap_connection, ldap_info['domain'], productID, config_name)
+        else:
+            config = configuration.get_config_by_dn(ldap_connection, configDN)
+        if len(config.elements) > 0:
+            utils.distribute_config(address, request.session, config.elements)
+        else:
+            status = 'There are no Agents related with current configuration'
+    except Exception as ex:
+        status = ex
+
+    return HttpResponse(status,
+            mimetype='text/plain')
+
 def config_agents(request, address, productID, config_name):
     ldap_connection = utils.get_ldap_connection(request.session, address)
 
@@ -215,10 +231,6 @@ def config_agents(request, address, productID, config_name):
     if request.method == 'POST':
         params = request.POST
         agents.save(ldap_connection, config, request.POST.getlist('agents'))
-
-    if params.get('distribute', None):
-        #distribute config
-        pass
 
     #get all agents and agents references
     ldap_info = request.session['ldap'][address]

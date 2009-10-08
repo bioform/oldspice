@@ -13,7 +13,9 @@ class GeneralForm(forms.Form):
 
 
 def update_config(l, config, form):
-    time_str = datetime.now().strftime('%Y%m%d%H%M%S')
+    time_str = datetime.now().strftime('%Y%m%d%H%M%S.%f')
+    time_str = time_str[:len(time_str)-3] + "Z"
+    
     mod_attrs = [( ldap.MOD_REPLACE, 'dlmName', form.data['name'].encode("utf-8") ),
                  ( ldap.MOD_REPLACE, 'dlmCaption', form.data['name'].encode("utf-8") ),
                  ( ldap.MOD_REPLACE, 'dlmDescription', form.data['desc'].encode("utf-8") ),

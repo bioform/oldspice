@@ -1,9 +1,10 @@
 import httplib
+import urllib
 import ldap
-import sys, os, traceback
 from django.conf import settings
 from datetime import datetime
-from xml.dom.minidom import parse, parseString
+from symantec.ssim.exceptions import *
+from symantec.ssim.utils import cookie_processor
 
 def get_auth_xml(address, login, password):
     print "Try connect to SSIM", address
@@ -104,12 +105,13 @@ def ldap_authenticate(session, address, login, password):
         else:
             raise DefaultDomainException, "Illegal SSIM response: %s" % (xml,)
 
-def send_xml(address, path, session, xml, iteration = 0):
+def send_xml(address, path, session, xml):
     sessionID = session['%s sessionID' % address]
+    print "SessionID:", sessionID
     if not sessionID:
         raise NoSessionIDException('Please authenticate')
 
-    print "Send request to SSIM", address,", iteration:", iteration
+    print "Send request to SSIM", address
 
     print "\n--------------------------\n",xml,"\n--------------------------\n"
     #initial value
@@ -117,28 +119,20 @@ def send_xml(address, path, session, xml, iteration = 0):
 
     conn = httplib.HTTPSConnection(address, timeout=10)
     conn.putrequest("POST", path)
-    conn.putheader("Content-type", "text/xml; charset=UTF-8")
+    conn.putheader("content-type", "text/xml; charset=UTF-8")
     conn.putheader("Content-length", "%d" % len(xml))
     conn.endheaders()
     conn.send(xml)
     r1 = conn.getresponse()
-    print "Response headers:", r1.getheaders()
-    content_type = r1.getheader('Content-type', None)
-    
-    if content_type == 'text/xml':
-        data = r1.read()
-        conn.close()
-    else:
-        if iteration == 0 and ('ldap' in session.keys()) and (address in session['ldap']):
-            params = session['ldap'][address]
-            ldap_authenticate(session, address, params['login'], params['password'])
-            data = send_xml(address, path, session, xml, 1)
-        else:
-            raise NotAuthorisedException('Please authenticate')
 
-    return data
+    content_type = r1.getheader('content-type', None)
+    data = r1.read()
+    conn.close()
+    
+    return content_type, data
 
 def distribute_config(address, session, agent_dn_list):
+    path = '/sesa/servlet/Admin'
     sessionID = session['%s sessionID' % address]
     if not sessionID:
         raise NoSessionIDException('Please authenticate')
@@ -146,16 +140,73 @@ def distribute_config(address, session, agent_dn_list):
     xml_header = """<?xml version="1.0" encoding="UTF-8"?>
     <ssmcRequest requestID="1254922441483" sessionID="%s">
         <sendReloadConfigCommand>
-            <computerList>
-    """ % (sessionID)
+            <computerList>\n"""
 
+    xml = ""
     for agent in agent_dn_list:
-        xml_header += "<computer>%s</computer>" % agent
+        xml += "<computer>%s</computer>\n" % agent
+
     xml_footer = """
             </computerList>
         </sendReloadConfigCommand>
     </ssmcRequest>
     """
 
-    xml = xml_header + xml_footer
-    send_xml(address, '/sesa/servlet/Admin', session, xml)
+    xml = (xml_header % sessionID) + xml + xml_footer
+    content_type, data = send_xml(address, path, session, xml)
+
+    dom = parseString(data)
+    status = dom.getElementsByTagName("status")
+
+    if len(status) == 0 or status[0].getAttribute('success') != 'true':
+        if ('ldap' in session.keys()) and (address in session['ldap']):
+            params = session['ldap'][address]
+            ldap_authenticate(session, address, params['login'], params['password'])
+            #get new sessionID
+            sessionID = session['%s sessionID' % address]
+            #create xml with new sessionID
+            xml = (xml_header % sessionID) + xml + xml_footer
+            #send request again
+            content_type, data = send_xml(address, path, session, xml, 1)
+        else:
+            raise NotAuthorisedException('Please authenticate')
+
+def webapi_get(session, address, path, params = None):
+    sessionID = session.get('%s WebAPI sessionID' % address)
+    print "WebAPI SessionID:", sessionID
+
+    Headers = {
+        "Content-type": "application/x-www-form-urlencoded",
+        "Accept": "text/xml"}
+
+    if sessionID:
+        Headers["Cookie"] = "JSESSIONID=%s" % sessionID
+
+    if not params:
+        params = {}
+    else:
+        params = urllib.urlencode(params)
+
+    print "Send WebAPI request to SSIM", address
+
+    print "\n--------------------------\n",params,"\n--------------------------\n"
+    #initial value
+    data = None
+
+    conn = httplib.HTTPSConnection(address, timeout=10)
+    conn.request("GET", path, params, Headers)
+    response = conn.getresponse()
+
+    cookies = cookie_processor.get_cookies( response )
+
+    #store WebAPI session ID to current Django session
+    new_session_id = cookies.get('JSESSIONID')
+    if new_session_id:
+        session['%s WebAPI sessionID' % address] = new_session_id
+
+    content_type = response.getheader('content-type', None)
+    data = response.read()
+    conn.close()
+
+    return content_type, cookies, data
+

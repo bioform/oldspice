@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('symantec.ssim.config.views',
+    (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>[^/]+)/distribute$', 'distribute_config'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/agents-tab$', 'config_agents'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/general-tab$', 'config_general'),
     (r'^(?P<address>[^/]+)/product/(?P<productID>\d+)/config/(?P<config_name>.+)/options-tab$', 'config_options'),

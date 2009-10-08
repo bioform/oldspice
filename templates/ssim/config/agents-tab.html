@@ -98,6 +98,8 @@
         });
         if( statusText != 'success' ){
             alert('Server status: ' + statusText + '\n\nServer response: \n' + responseText);
+        } else {
+            notify('Form saved')
         }
     }
 
