@@ -5,6 +5,7 @@ from django.conf import settings
 from datetime import datetime
 from symantec.ssim.exceptions import *
 from symantec.ssim.utils import cookie_processor
+from xml.dom.minidom import parse, parseString
 
 def get_auth_xml(address, login, password):
     print "Try connect to SSIM", address
@@ -189,14 +190,13 @@ def webapi_get(session, address, path, params = None):
 
     print "Send WebAPI request to SSIM", address
 
-    print "\n--------------------------\n",params,"\n--------------------------\n"
+    print "\n-------Request Params-----\n",params,"\n--------------------------\n"
     #initial value
     data = None
 
     conn = httplib.HTTPSConnection(address, timeout=10)
     conn.request("GET", path, params, Headers)
     response = conn.getresponse()
-
     cookies = cookie_processor.get_cookies( response )
 
     #store WebAPI session ID to current Django session
@@ -208,5 +208,5 @@ def webapi_get(session, address, path, params = None):
     data = response.read()
     conn.close()
 
-    return content_type, cookies, data
+    return response.status, content_type, cookies, data
 

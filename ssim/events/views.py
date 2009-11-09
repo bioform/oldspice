@@ -15,6 +15,7 @@ from symantec.ssim.config import general
 from symantec.ssim.exceptions import *
 
 def get_events(request, address):
-    utils.webapi_get(request.session, '169.254.13.232', '/imr/config/api.jsp', {'cmd': 'EVENTS'})
-    return HttpResponse('OK!',
-            mimetype='text/plain')
+    status, content_type, cookies, data = utils.webapi_get(request.session, '169.254.13.232', '/imr/config/api.jsp', {'cmd': 'EVENTS'})
+    print "Status:", status, "Content-Type:", content_type,", Cookies:", cookies,", Data:", data
+    return render_to_response('ssim/events/index.html', {'address':address},
+        mimetype="text/html")

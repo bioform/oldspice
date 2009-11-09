@@ -1,12 +1,13 @@
 import re
 
 def get_cookies(response):
-    set_cookie = response.getheader('set-cookie')
-    cookie_list = _normalized_cookie_tuples( _parse_ns_headers(set_cookie) )
     cookies = {}
-    for tup in cookie_list:
-        name, value, standard, rest = tup
-        cookies[name] = value
+    set_cookie = response.getheader('set-cookie')
+    if set_cookie:
+        cookie_list = _normalized_cookie_tuples( _parse_ns_headers(set_cookie) )
+        for tup in cookie_list:
+            name, value, standard, rest = tup
+            cookies[name] = value
     return cookies
 
 def _parse_ns_headers(ns_header):
