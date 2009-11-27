@@ -117,10 +117,10 @@ Version: 1.0
 
 #panel {
 	width: 100%;
-	height: 270px;
+	height: 200px;
 	color: #999999;
 	background: #272727;
-	overflow: hidden;
+	overflow: auto;
 	position: relative;
 	z-index: 3;
 	display: none;
@@ -138,6 +138,7 @@ Version: 1.0
 	padding: 10px 0 5px;
 	margin: 0;
 	color: white;
+        text-align: center;
 }
 
 #panel p {
@@ -154,16 +155,9 @@ Version: 1.0
 	color: white;
 }
 
-#panel a-lost-pwd {
-	display: block;
-	float: left;
-}
-
-#panel .content {
-	width: 960px;
+#panel .content {;
 	margin: 0 auto;
 	padding-top: 15px;
-	text-align: left;
 	font-size: 0.85em;
 }
 
@@ -178,16 +172,19 @@ Version: 1.0
 	border-right: 1px solid #333;
 }
 
-#panel .content form {
-	margin: 0 0 10px 0;
-}
-
 #panel .content label {
 	float: left;
 	padding-top: 8px;
 	clear: both;
-	width: 280px;
+	width: 100px;
 	display: block;
+        white-space:nowrap;
+        text-align:left;
+}
+
+#panel .content label .radio{
+        margin-top:-5px;
+        vertical-align:middle;
 }
 
 #panel .content input.field {
@@ -202,40 +199,5 @@ Version: 1.0
 
 #panel .content input:focus.field {
 	background: #545454;
-}
-
-/* BUTTONS */
-/* Login and Register buttons */
-#panel .content input.bt_login,
-#panel .content input.bt_register {
-	display: block;
-	float: left;
-	clear: left;
-	height: 24px;
-	text-align: center;
-	cursor: pointer;
-	border: none;
-	font-weight: bold;
-	margin: 10px 0;
-}
-
-#panel .content input.bt_login {
-	width: 74px;
-	background: transparent url(../img/slide/bt_login.png) no-repeat 0 0;
-}
-
-#panel .content input.bt_register {
-	width: 94px;
-	color: white;
-	background: transparent url(../img/slide/bt_register.png) no-repeat 0 0;
-}
-
-#panel .lost-pwd {
-	display: block;
-	float:left;
-	clear: right;
-	padding: 15px 5px 0;
-	font-size: 0.95em;
-	text-decoration: underline;
 }
 

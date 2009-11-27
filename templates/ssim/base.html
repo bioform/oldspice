@@ -55,6 +55,7 @@
                 <a href="/ssim/{{ address }}/products" class="link_for_mainmenu fg-button ui-state-default ui-state-active ui-priority-primary ui-corner-left" title="Products">products</a>
                 <a href="/ssim/{{ address }}/locations" class="link_for_mainmenu fg-button ui-state-default ui-priority-primary ui-corner-right" title="Agents">agents</a>
             </div>
+            <a href="/ssim/events/{{ address }}" id="events" class="fg-button ui-state-default ui-priority-primary ui-corner-all" title="Events" target="_blank">events</a>
         {% endblock %}
     </div>
 
@@ -100,6 +101,12 @@
         $('a.link_for_mainmenu').click(function(event){
             event.preventDefault();
             load_data($(this).attr('href'), '#mainmenu')
+            return false;
+        });
+
+        $('#events').click(function(event){
+            event.preventDefault();
+            window.open( $(this).attr('href'), $(this).attr('href'), "width=800,height=600,menubar=no,toolbar=no,location=no" );
             return false;
         });
   </script>
