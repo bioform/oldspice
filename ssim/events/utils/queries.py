@@ -1,53 +1,82 @@
 import ldap
 from symantec.ssim.utils import ldaphelper
 from xml.dom.minidom import parse, parseString
+from datetime import datetime
 
 
 class Value:
     def __init__(self, node):
-        self.type = node.getElementsByTagName("type")[0]
+        typeNodes = node.getElementsByTagName("type")
+        if len(typeNodes) > 0:
+            self.type = typeNodes[0]
+
         self.text = getText(node.childNodes)
 
 class Field:
     def __init__(self, node):
-        self.byname = node.getElementsByTagName("byname")[0]
-        self.byuser = node.getElementsByTagName("byuser")[0]
-        self.id = node.getElementsByTagName("id")[0]
-        self.name = node.getElementsByTagName("name")[0]
-        self.type = node.getElementsByTagName("type")[0]
+
+        bynameNodes = node.getElementsByTagName("byname")
+        if len(bynameNodes) > 0:
+            self.byname = [0]
+
+        byuserNodes = node.getElementsByTagName("byuser")
+        if len(byuserNodes):
+            self.byuser = byuserNodes[0]
+
+        idNodes = node.getElementsByTagName("id")
+        if len(idNodes) > 0:
+            self.id = idNodes[0]
+
+        nameNodes = node.getElementsByTagName("name")
+        if len(nameNodes) > 0:
+            self.name = nameNodes[0]
+
+        typeNodes = node.getElementsByTagName("type")
+        if len(typeNodes) > 0:
+            self.type = typeNodes[0]
 
 class Argument:
     def __init__(self, node):
         fieldNodes = node.getElementsByTagName("Field")
-        if len(fieldNodes) > 0
+        if len(fieldNodes) > 0:
             self.field = Field(fieldNodes[0])
-        else
+        else:
             self.field = None
 
         valueNodes = node.getElementsByTagName("Value")
-        if len(fieldNodes) > 0
+        if len(valueNodes) > 0:
             self.value = Value(valueNodes[0])
-        else
+        else:
             self.value = None
 
 class Condition:
     def __init__(self, node):
-        self.operator = node.getElementsByTagName("operator")[0]
+        operatorNodes = node.getElementsByTagName("operator")
+        if len(operatorNodes) > 0:
+            self.operator = operatorNodes[0]
+        else:
+            self.operator = None
+            
         self.arguments = []
-        for c in node.getElementsByTagName("Argument")
+        for c in node.getElementsByTagName("Argument"):
             self.arguments += [Argument(c)]
 
 class Criteria:
     def __init__(self, node):
-        self.name = node.getElementsByTagName("name")[0]
+        nameNodes = node.getElementsByTagName("name")
+        if len(nameNodes) > 0:
+            self.name = nameNodes[0]
+        else:
+            self.name = None
+            
         self.conditions = []
-        for c in node.getElementsByTagName("Condition")
+        for c in node.getElementsByTagName("Condition"):
             self.conditions += [Condition(c)]
 
 class Query:
     def __init__(self, xml):
             #parse XML
-        dom = parseString(sensor_xml)
+        dom = parseString(xml)
         #get all sensors
         query = dom.getElementsByTagName("query")[0]
         self.uid = query.getElementsByTagName("uid")[0]
@@ -55,12 +84,21 @@ class Query:
         self.type = query.getElementsByTagName("querytype")[0]
         self.name = query.getElementsByTagName("query_name")[0]
 
-        timerange = query.getElementsByTagName("timerange")[0]
-        self.timerangetype = timerange.getElementsByTagName("timerangetype")[0]
-        self.timerangevalue = timerange.getElementsByTagName("value")[0]
+        if len(query.getElementsByTagName("timerange")) > 0:
+            timerange = query.getElementsByTagName("timerange")[0]
+
+            timerangetypeNodes = timerange.getElementsByTagName("timerangetype")
+            if len(timerangetypeNodes) > 0:
+                self.timerangetype = getText( timerangetypeNodes[0].childNodes)
+
+            valueNodes = timerange.getElementsByTagName("value")
+            if len(valueNodes) > 0:
+                self.timerangevalue = getText( valueNodes[0].childNodes)
+        else:
+            timerange = None
 
         self.criterias = []
-        for c in query.getElementsByTagName("criteria")
+        for c in query.getElementsByTagName("criteria"):
             self.criterias += [Criteria(c)]
 
 class QueryDef:
@@ -98,7 +136,7 @@ def get_custom_queries(l, base_dn):
 def get_system_queries(l, base_dn):
     filter = '(objectclass=symc1SettingInstance)'
     attrs = ['dlmSettingID','dlmCaption','binProperty', 'symcProductVersion']
-    raw_res = l.search_s( "cn=cn=System Queries,cn=Queries,ou=Administration,dc=Symantec,dc=SES,O=SYMC_SES Queries,cn=Queries,ou=Administration,"+base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
+    raw_res = l.search_s( "cn=System Queries,cn=Queries,ou=Administration,"+base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
     search_result = ldaphelper.get_search_results( raw_res )
     list = [QueryDef(item) for item in search_result]
     return list
