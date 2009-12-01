@@ -107,7 +107,7 @@ class QueryDef:
         self.id = search_result.get_attr_values('dlmSettingID')[0]
         self.name = search_result.get_attr_values('dlmCaption')[0]
 
-        self.query = Query(search_result.get_attr_values('binProperty')[0])
+        self.bin_property = search_result.get_attr_values('binProperty')[0]
 
         if  search_result.has_attribute('symcSequenceRevision'):
             self.updated_at = search_result.get_attr_values('symcSequenceRevision')[0]
@@ -115,6 +115,9 @@ class QueryDef:
         else:
             self.updated_at = datetime.now()
 
+    def extract_query(self):
+        self.query = Query(self.bin_property)
+        return self.query
 
     def __str__(self):
         return self.name
@@ -125,9 +128,17 @@ class QueryDef:
     def __hash__(self):
         return self.productID.__hash__()
 
-def get_custom_queries(l, base_dn):
+def get_query(l, query_dn):
     filter = '(objectclass=symc1SettingInstance)'
     attrs = ['dlmSettingID','dlmCaption','binProperty', 'symcProductVersion']
+    raw_res = l.search_s( query_dn, ldap.SCOPE_BASE, filter, attrs)
+    search_result = ldaphelper.get_search_results( raw_res )
+    query_def = QueryDef(search_result[0])
+    return query_def.extract_query()
+
+def get_custom_queries(l, base_dn):
+    filter = '(objectclass=symc1SettingInstance)'
+    attrs = ['dlmSettingID','dlmCaption', 'symcProductVersion']
     raw_res = l.search_s( "cn=Custom Queries,cn=Queries,ou=Administration,"+base_dn, ldap.SCOPE_SUBTREE, filter, attrs)
     search_result = ldaphelper.get_search_results( raw_res )
     list = [QueryDef(item) for item in search_result]

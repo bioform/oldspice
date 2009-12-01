@@ -81,7 +81,14 @@ body {
 #mainmenu ul{
     margin:0;
     padding-left: 20px ;
+    list-style:none;
 }
+
+#mainmenu dd{
+    margin:0;
+    padding: 0;
+}
+
 #mainmenu ul li{
     margin:0;
     padding: .3em 0em;

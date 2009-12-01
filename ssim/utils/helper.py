@@ -1,5 +1,4 @@
-import httplib
-import urllib
+import urllib, urllib2, httplib, openanything
 import ldap
 from django.conf import settings
 from datetime import datetime
@@ -89,7 +88,8 @@ def ldap_authenticate(session, address, login, password):
     if len(infos) == 1:
         info = infos[0]
         sessionID = info.getAttribute('sessionID')
-        domain = "dc={0[0]},dc={0[1]},o=symc_ses".format(info.getAttribute('domain').split('.'))
+        domain_attr = info.getAttribute('domain')
+        domain = "dc={0[0]},dc={0[1]},o=symc_ses".format(domain_attr.split('.'))
         session['%s sessionID' % address] = sessionID
         session['ldap'] = {address:{
             'domain':domain,
@@ -97,6 +97,7 @@ def ldap_authenticate(session, address, login, password):
             'address':address,
             'login':login,
             'password':password,
+            'domain_name': domain_attr
         }}
         l = get_ldap_connection(session, address)
     else:
@@ -172,7 +173,7 @@ def distribute_config(address, session, agent_dn_list):
         else:
             raise NotAuthorisedException('Please authenticate')
 
-def webapi_get(session, address, path, params = None):
+def webapi_get(session, address, path, params = None, method = "POST", redirect = False):
     sessionID = session.get('%s WebAPI sessionID' % address)
     print "WebAPI SessionID:", sessionID
 
@@ -194,9 +195,21 @@ def webapi_get(session, address, path, params = None):
     #initial value
     data = None
 
-    conn = httplib.HTTPSConnection(address, timeout=10)
-    conn.request("GET", path, params, Headers)
-    response = conn.getresponse()
+
+    response = None
+    request = None
+    conn = None
+    opener = None
+    if redirect:
+        url = 'https://' + address + path
+        request = urllib2.Request(url)
+        opener = urllib2.build_opener( openanything.SmartRedirectHandler() )
+        response = opener.open(request)
+    else:
+        conn = httplib.HTTPSConnection(address, timeout=10)
+        conn.request(method, path, params, Headers)
+        response = conn.getresponse()
+
     cookies = cookie_processor.get_cookies( response )
 
     #store WebAPI session ID to current Django session
@@ -206,7 +219,42 @@ def webapi_get(session, address, path, params = None):
 
     content_type = response.getheader('content-type', None)
     data = response.read()
-    conn.close()
 
-    return response.status, content_type, cookies, data
+    if conn:
+        conn.close()
+    if opener:
+        opener.close()
 
+    return response.status, content_type, response.getheaders(), cookies, data
+
+def webapi_login(session, address, login = None, password = None, domain = None):
+    if not login:
+        login = session['ldap'][address]['login']
+    if not password:
+        password = session['ldap'][address]['password']
+    if not domain:
+        domain = session['ldap'][address]['domain_name']
+
+    #path = "/imr/ssim/ssim_login.htm"
+    path = "/imr/config/api.jsp"
+    params = {
+        'cmd': 'LOGIN',
+        'user': login,
+        'pwd': password,
+        'domain': domain,
+    }
+    status, content_type, headers, cookies, data = webapi_get(session, address, path, params)
+
+    if status == 404:
+        path = "/imr/ssim/ssim_login.htm"
+        params = {
+            'mode': 'Request',
+            'altkeypressed': 'false',
+            'username': login,
+            'password': password,
+            'domain': domain,
+            'Submit': 'Submit'
+        }
+        status, content_type, headers, cookies, data = webapi_get(session, address, path, params)
+        
+    return status, content_type, headers, cookies, data

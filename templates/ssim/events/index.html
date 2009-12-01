@@ -72,7 +72,9 @@
             {% endblock %}
         </div>
         <div id="content">
-            SSIM {{ address }}
+            {% block content %}
+                Loading...
+            {% endblock %}
         </div>
     </div>
     <div id="footer" class="fg-toolbar ui-widget-header ui-helper-clearfix">
@@ -121,19 +123,14 @@
 
   <script>
         $(document).ready(function() {
-                //load_data('/ssim/events/{{ address }}/', '#mainmenu');
+                load_data('/ssim/events/{{ address }}/queries', '#mainmenu');
+                load_data('/ssim/events/{{ address }}/events', '#content');
         });
 
         $('a.link_for_mainmenu').click(function(event){
             event.preventDefault();
             load_data($(this).attr('href'), '#mainmenu')
             return false;
-        });
-  </script>
-
-  <script>
-        $(document).ready(function() {
-                load_data('/ssim/events/{{ address }}/queries', '#mainmenu');
         });
   </script>
 
