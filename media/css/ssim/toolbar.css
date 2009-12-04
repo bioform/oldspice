@@ -20,7 +20,8 @@ button.fg-button-icon-solo span.ui-icon{ margin-left: -11px;}
 .fg-buttonset-single .fg-button,
 .fg-buttonset-multi .fg-button { margin-right: -1px;}
 
-.fg-buttonset button.fg-button-icon-solo span.ui-icon{ margin-left: -11px;}
+.fg-buttonset button.fg-button-icon-solo span.ui-icon{ margin-left: -9px;}
+.fg-buttonset button.fg-button-icon-solo{padding: .3em .7em;}
 
 .fg-toolbar { padding: .0em; margin: 0; }
 .fg-toolbar .fg-buttonset { margin-right:1.5em; padding-left: 1px; }

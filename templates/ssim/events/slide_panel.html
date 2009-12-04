@@ -8,16 +8,17 @@
                                 <label>
                                     <input class="radio" type="radio" name="view" value="view"/>
                                     View:
-                                    <select name="view_range" id="view_range">
-                                        <option value="5" >Last 5 minutes</option>
-                                        <option value="10">Last 10 minutes</option>
-                                        <option value="15">Last 15 minutes</option>
-                                        <option value="30">Last 30 minutes</option>
-                                        <option value="45">Last 45 minutes</option>
-                                        <option value="60">Last hour</option>
-                                        <option value="480">Last 8 hours</option>
-                                    </select>
                                 </label>
+                                <select name="view_range" id="view_range">
+                                    <option value="5" >Last 5 minutes</option>
+                                    <option value="10">Last 10 minutes</option>
+                                    <option value="15">Last 15 minutes</option>
+                                    <option value="30">Last 30 minutes</option>
+                                    <option value="45">Last 45 minutes</option>
+                                    <option value="60">Last hour</option>
+                                    <option value="480">Last 8 hours</option>
+                                </select>
+                                
                                 <br/>
                                 <label>
                                     <input class="radio" type="radio" name="view" value="complete"/>
@@ -36,23 +37,35 @@
                             </label>
                         </fieldset>
                     </div>
-                    <div class="left right" style="width:400px">
+                    <div class="left right" style="width:600px">
                         <fieldset>
                             <legend>Cilter criteria</legend>
 
-                            <label style="width:150px;"><input name="uniq_value_by_column" id="uniq_value_by_column" type="checkbox" checked="checked" value="uniq_value_by_column" />
+                            <label style="width:150px;">
+                                <input name="uniq_value_by_column" id="uniq_value_by_column" type="checkbox" checked="checked" value="uniq_value_by_column" />
                                 &nbsp;Unique Value By Column
                             </label>
+                            <input type="text" class="field" style="float:left" name="uniq_column" id="uniq_column" value="" size="23" />
+                            
                             <br/><br/><br/>
+                            <div class="condition_set">
+                                <input class="field" type="text" name="field" id="field" value="" size="23" />
+                                <select name="condition" id="condition">
+                                    <option value="=" >equals</option>
+                                    <option value="!=">not equals</option>
+                                    <option value=">">great than</option>
+                                    <option value="<">less than</option>
+                                </select>
+                                <input class="field" type="text" name="field_value" id="field_value" size="23" />
 
-                            <label class="grey" for="log">Username:</label>
-                            <input class="field" type="text" name="log" id="log" value="" size="23" />
-                            <br/>
-                            <label class="grey" for="pwd">Password:</label>
-                            <input class="field" type="password" name="pwd" id="pwd" size="23" />
+                                <a id="add_condition" class="sp_button" href="#"  title="Add new condition">Add</a>
+                                <a id="remove_condition" class="sp_button" href="#" title="Remove condition">Remove</a>
+                            </div>
 
                             <div class="clear"></div>
-                            <input type="submit" name="submit" value="Login" class="bt_login" />
+                            <br/>
+                            <br/>
+                            <input type="submit" name="filter" value="Filter" class="bt_login" />
                         </fieldset>
                     </div>
 		</div>

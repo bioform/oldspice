@@ -244,17 +244,5 @@ def webapi_login(session, address, login = None, password = None, domain = None)
         'domain': domain,
     }
     status, content_type, headers, cookies, data = webapi_get(session, address, path, params)
-
-    if status == 404:
-        path = "/imr/ssim/ssim_login.htm"
-        params = {
-            'mode': 'Request',
-            'altkeypressed': 'false',
-            'username': login,
-            'password': password,
-            'domain': domain,
-            'Submit': 'Submit'
-        }
-        status, content_type, headers, cookies, data = webapi_get(session, address, path, params)
         
     return status, content_type, headers, cookies, data

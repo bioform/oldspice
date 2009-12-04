@@ -1,4 +1,5 @@
 from django import template
+import django
 
 register = template.Library()
 
@@ -8,3 +9,12 @@ def status(item):
         return 'enabled'
     else:
         return 'disabled'
+
+@register.filter
+def get(item, key, default = '&nbsp;'):
+    if item.has_key(key):
+        return item[key]
+    else:
+        return django.utils.safestring.mark_safe(default)
+    
+

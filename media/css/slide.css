@@ -189,15 +189,23 @@ Version: 1.0
 
 #panel .content input.field {
 	border: 1px #1A1A1A solid;
-	background: #414141;
-	margin-right: 5px;
-	margin-top: 4px;
 	width: 200px;
-	color: white;
-	height: 16px;
+        margin-top: 7px;
 }
 
 #panel .content input:focus.field {
-	background: #545454;
+	background: rgb(255,255,166);
+}
+
+.condition_set {
+    white-space:nowrap;
+}
+
+a.sp_button{
+    outline: 0;
+    margin:2px 4px 0 0;
+    padding: .4em .2em;
+    position: relative;
+    text-align: center; \zoom: 1;
 }
 

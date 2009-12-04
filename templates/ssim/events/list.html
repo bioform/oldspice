@@ -1,1 +1,43 @@
-Events...
+{% load ssim_extras %}
+
+<table id="data_list" border="1" summary="Event Table" style="border-collapse:collapse;border-color:rgb(240,240,240);">
+  <thead>
+    <tr>
+      {% for field in fields %}
+      <th rowspan="1" colspan="1" field="{{ field.name }}" class="ui-state-default">
+          {{ field.title }}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      {% for field in fields %}
+      <th rowspan="1" colspan="1" field="{{ field.name }}" class="ui-state-default">
+          {{ field.title }}
+      </th>
+      {% endfor %}
+    </tr>
+  </tfoot>
+  <tbody>
+    {% for event in events %}
+    <tr>
+      {% for field in fields %}
+      <td rowspan="1" colspan="1">{{ event.fields|get:field.name }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+    $('#data_list tbody tr').hover(
+      function () {
+        $(this).css('background-color','rgb(240,240,240)');
+      },
+      function () {
+        $(this).css('background-color','transparent');
+      }
+    );
+
+</script>

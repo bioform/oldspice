@@ -1,0 +1,17 @@
+/* 
+    Document   : ie_fix
+    Created on : 02.12.2009, 12:03:13
+    Author     : akrasnov
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+

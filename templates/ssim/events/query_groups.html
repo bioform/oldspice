@@ -1,0 +1,43 @@
+<dl>
+    <dt><strong>Custom queries</strong></dt>
+    <dd>
+        <dl>
+            {% for query_group in query_groups %}
+            <dt><a href="/ssim/events/{{ address }}/queries/{{ query_group.cn }}">{{ query_group }}</a></dt>
+
+                <dd>
+                    <ul>
+                    {% for query in query_group.queries %}
+                        <li>
+                            <a class="mainmenu" href="/ssim/events/{{ address }}/query/{{ query.id }}" queryDN="{{ query.dn }}">
+                                {{ query.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </dd>
+            {% endfor %}
+        </dl>
+    </dd>
+
+    <dt><strong>System queries</strong></dt>
+    <dd>
+        <dl>
+            {% for query_group in system_query_groups %}
+            <dt><a href="/ssim/events/{{ address }}/queries/{{ query_group.cn }}">{{ query_group }}</a></dt>
+
+                <dd>
+                    <ul>
+                    {% for query in query_group.queries %}
+                        <li>
+                            <a class="mainmenu" href="/ssim/events/{{ address }}/query/{{ query.id }}" queryDN="{{ query.dn }}">
+                                {{ query.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </dd>
+            {% endfor %}
+        </dl>
+    </dd>
+</dl>
