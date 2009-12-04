@@ -21,7 +21,7 @@
   </tfoot>
   <tbody>
     {% for event in events %}
-    <tr>
+    <tr class="{% cycle 'even' 'odd' %}">
       {% for field in fields %}
       <td rowspan="1" colspan="1">{{ event.fields|get:field.name }}</td>
       {% endfor %}
@@ -29,15 +29,3 @@
     {% endfor %}
   </tbody>
 </table>
-
-<script>
-    $('#data_list tbody tr').hover(
-      function () {
-        $(this).css('background-color','rgb(240,240,240)');
-      },
-      function () {
-        $(this).css('background-color','transparent');
-      }
-    );
-
-</script>

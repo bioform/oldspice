@@ -52,6 +52,26 @@
         });
     </script>
 
+    <style type="text/css">
+        .ui-progressbar-value { background-image: url(/img/ssim/pbar-ani.gif); }
+    </style>
+    <script type="text/javascript">
+        $().ready(function() {
+                $("#progressbar").progressbar({
+                        value: 0
+                });
+        });
+        function startProgress(obj, val){
+            if(val > 100){
+                val = 100;
+            }
+            obj.progressbar('option', 'value', val);
+            if( obj.css('display') != 'none' ){
+                setTimeout(startProgress, 100, obj, val+3);
+            }
+        }
+    </script>
+
     <title>SSIM Events</title>
 </head>
 <body>
@@ -87,7 +107,7 @@
     </div>
     <div id="footer" class="fg-toolbar ui-widget-header ui-helper-clearfix">
         {% block footer %}
-            Status bar
+            <div id="progressbar"></div>
         {% endblock %}
     </div>
 
@@ -170,12 +190,15 @@
                     collapse_panel();
                 }
                 //notify('List was updated')
+                $("#progressbar").css('display', 'none');
             }
         }
 
         // вызов перед передачей данных
         function showRequest(formData, jqForm, options) {
-
+            var obj  = $("#progressbar")
+            obj.css('display', 'block');
+            startProgress(obj,5);
             //var queryString = $.param(formData);
             //alert('Вот что мы передаем: \n\n' + queryString);
             return true;

@@ -118,4 +118,29 @@ body {
 
 #data_list tbody tr {
     cursor: pointer;
+    white-space:nowrap;
+}
+
+#data_list tbody tr:hover {
+    background-color: rgb(220,220,220);
+}
+
+#data_list td{
+    padding: 2px 3px 2px 3px;
+}
+
+.even {
+    background: rgb(255,255,190);
+}
+
+.odd{
+
+}
+
+#progressbar {
+    width:70px;
+    height:16px;
+    margin-top:3px;
+    float:right;
+    display:none;
 }
