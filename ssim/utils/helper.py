@@ -173,6 +173,18 @@ def distribute_config(address, session, agent_dn_list):
         else:
             raise NotAuthorisedException('Please authenticate')
 
+def webapi_get_with_login(session, address, path, params = None, method = "POST", redirect = False):
+    status, content_type, headers, cookies, data = webapi_get(session, address, path, params, method, redirect)
+
+    if status == 302:
+        status, content_type, headers, cookies, data = webapi_login(session, address)
+        if status == 200:
+            status, content_type, headers, cookies, data = webapi_get(session, address, path, params, method, redirect)
+        else:
+            log.error("Cannot login to " + address)
+            
+    return status, content_type, headers, cookies, data
+
 def webapi_get(session, address, path, params = None, method = "POST", redirect = False):
     sessionID = session.get('%s WebAPI sessionID' % address)
     print "WebAPI SessionID:", sessionID

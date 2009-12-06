@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from symantec.ssim.events.utils import queries
 from symantec.ssim.events.utils import converter
 from symantec.ssim.events.utils import events_handler
+from symantec.ssim.events.utils import stats_handler
 from symantec.ssim.events.utils.queries import Query
 
 from symantec.ssim.exceptions import *
@@ -28,6 +29,33 @@ def index(request, address):
         },
         mimetype="text/html")
 
+def get_event_stats(request, address):
+    params = {'cmd': 'STATISTICS', 'history': '', 'module': 'SIM'}
+    status, content_type, headers, cookies, data = utils.webapi_get_with_login(request.session, address, '/imr/config/api.jsp', params)
+    
+    handler = stats_handler.EventHandler()
+    xml.sax.parseString(data, handler)
+
+    return render_to_response('ssim/events/event_stats.html', {
+            'address':address,
+            'stats': handler.stats,
+        },
+        mimetype="text/html")
+
+def get_event(request, address, guid):
+    params = {'cmd': 'EVENTS', 'guid': guid}
+    status, content_type, headers, cookies, data = utils.webapi_get_with_login(request.session, address, '/imr/config/api.jsp', params)
+
+    handler = events_handler.EventHandler()
+    xml.sax.parseString(data, handler)
+
+    return render_to_response('ssim/events/event.html', {
+            'address':address,
+            'event': handler.events[0],
+            'fields': DEFAULT_FIELD_LIST,
+        },
+        mimetype="text/html")
+
 def get_events(request, address):
     request_data = request.POST
     if request.method == 'GET':
@@ -44,14 +72,8 @@ def get_events(request, address):
             params['filter'] = filter
             print "---> filter:", params['filter']
 
-    status, content_type, headers, cookies, data = utils.webapi_get(request.session, '169.254.13.232', '/imr/config/api.jsp', params)
+    status, content_type, headers, cookies, data = utils.webapi_get_with_login(request.session, address, '/imr/config/api.jsp', params)
 
-    if status == 302:
-        status, content_type, headers, cookies, data = utils.webapi_login(request.session, '169.254.13.232')
-        if status == 200:
-            status, content_type, headers, cookies, data = utils.webapi_get(request.session, '169.254.13.232', '/imr/config/api.jsp', params)
-        else:
-            log.error("Cannot login to " + address)
 
     handler = events_handler.EventHandler()
     xml.sax.parseString(data, handler)

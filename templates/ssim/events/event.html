@@ -1,0 +1,16 @@
+{% load ssim_extras %}
+<html>
+    <head>
+
+    </head>
+    <body>
+        <table id="data_list" border="1" summary="Event Table" style="border-collapse:collapse;border-color:rgb(240,240,240);">
+            {% for key in event.fields %}
+            <tr>
+                <th>{{ key }}</th>
+                <td>{{ event.fields|get:key }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

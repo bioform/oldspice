@@ -36,7 +36,8 @@
 
     <!-- Fix browser CSS -->
     <link rel="stylesheet" type="text/css" href="/css/ssim/fix/{{ browser }}.css" />
-    
+
+    {% load ssim_extras %}
 
     <script>
         $().ready(function() {
@@ -107,6 +108,11 @@
     </div>
     <div id="footer" class="fg-toolbar ui-widget-header ui-helper-clearfix">
         {% block footer %}
+            <ul id="event_stats_chart">
+                {% for rate in 60|get_range %}
+                <li><a id="event_stat" index="{{ forloop.counter0 }}" href="#" style="background-position: center -0%;" >&nbsp;</a></li>
+                {% endfor %}
+            </ul>
             <div id="progressbar"></div>
         {% endblock %}
     </div>
@@ -150,9 +156,14 @@
   </script>
 
   <script>
+        function update_event_stats(url, id){
+            load_data(url, id);
+            setTimeout(update_event_stats, 5000, url, id);
+        }
         $(document).ready(function() {
                 load_data('/ssim/events/{{ address }}/queries', '#mainmenu');
                 load_data('/ssim/events/{{ address }}/events', '#content');
+                setTimeout(update_event_stats, 3000, '/ssim/events/{{ address }}/event_stats', '#event_stats_chart');
         });
 
         $('a.link_for_mainmenu').click(function(event){
@@ -190,14 +201,14 @@
                     collapse_panel();
                 }
                 //notify('List was updated')
-                $("#progressbar").css('display', 'none');
+                $("#progressbar").hide();
             }
         }
 
         // вызов перед передачей данных
         function showRequest(formData, jqForm, options) {
             var obj  = $("#progressbar")
-            obj.css('display', 'block');
+            obj.show();
             startProgress(obj,5);
             //var queryString = $.param(formData);
             //alert('Вот что мы передаем: \n\n' + queryString);

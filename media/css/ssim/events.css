@@ -144,3 +144,32 @@ body {
     float:right;
     display:none;
 }
+
+#event_stats_chart {
+    height:22px;
+    font-family: Tahoma;
+    font-size: 3px;
+    border: 1px solid #ccc;
+    float: right;
+    margin: 0px 0px 0px 0px;
+    padding: 0;
+}
+
+#event_stats_chart li {
+    list-style: none;
+    float: left;
+    width: 3px;
+    text-align: center;
+    background: url(event_stats_chart/chart_bg.gif) center 0em no-repeat;
+    margin: 0;
+    padding:0;
+}
+
+#event_stats_chart li a {
+    text-decoration:none;
+    margin:0;
+    display: block;
+    text-indent: -999em;
+    padding: 0px 0px 21px 0px;
+    background: url(event_stats_chart/chart_bg_ol.gif) center -0px no-repeat;
+}

@@ -16,5 +16,8 @@ def get(item, key, default = '&nbsp;'):
         return item[key]
     else:
         return django.utils.safestring.mark_safe(default)
-    
+
+@register.filter
+def get_range(item):
+    return range(item)
 
