@@ -1,0 +1,24 @@
+{% for archive in archives %}
+<label  title="{{ archive.descr }}">
+    <input type="checkbox" id="archive_id" name="archive_id" value="{{ archive.id }}" checked="checked"/>{{ archive.name }}
+</label>
+<br/>
+{% endfor %}
+<script>
+    // the getValue() method -- break the chain
+	var getValue = function(jq){
+		var v = [];
+                jq.each(function(){
+                    // if the checkbox or radio element is checked
+                    if( this.checked ) v.push(this.value);
+                });
+                return v;
+        };
+    
+    $('#event_list_form #archive_id').val( getValue( $('#archive_list #archive_id') ) );
+    
+    $('#archive_list #archive_id').change(function(){
+        $('#event_list_form #archive_id').val( getValue( $('#archive_list #archive_id') ) );
+    });
+    
+</script>

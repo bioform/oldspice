@@ -1,13 +1,280 @@
-<?xml version="1.0" encoding="windows-1251"?>
-
-<!--
-    Document   : newXMLDocument.xml
-    Created on : 18 �������� 2009 �., 11:32
-    Author     : akrasnov
-    Description:
-        Purpose of the document follows.
--->
-
-<root>
-
-</root>
+<?xml version="1.0" encoding="UTF-8"?>
+<EVENTS archive_id="24695" archive_ids="24695,8807" process_ms="2149">
+    <EVENT event_dt="Sun Dec 06 16:37:50 MSK 2009" guid="6077:20091206163750:10000" log_dt="Sun Dec 06 16:37:50 MSK 2009">
+        <FIELD name="create_dt" value="Sun Dec 06 16:37:50 MSK 2009"/>
+        <FIELD name="product_id" value="3007"/>
+        <FIELD name="event_desc" value="ConcurrentModificationException: com.symantec.sim.rx.RXMethodResult@10574f8"/>
+        <FIELD name="event_guid" value="6077:20091206163750:10000"/>
+        <FIELD name="option2_type" value="Line Number"/>
+        <FIELD name="logged_dt" value="Sun Dec 06 16:37:50 MSK 2009"/>
+        <FIELD name="option1_type" value="File Name"/>
+        <FIELD name="event_id" value="2102006"/>
+        <FIELD name="option4_type" value="Method Name"/>
+        <FIELD name="vendor_code" value="2102006"/>
+        <FIELD name="option1" value="RXTcpService.java"/>
+        <FIELD name="option2" value="836"/>
+        <FIELD name="option3" value="com.symantec.sim.rx.RXTcpService$WorkerTask"/>
+        <FIELD name="machine_ip" value="169.254.13.232"/>
+        <FIELD name="event_ct" value="1"/>
+        <FIELD name="option4" value="writeObject"/>
+        <FIELD name="source_ip" value="169.254.13.232"/>
+        <FIELD name="option3_type" value="Class Name"/>
+        <FIELD name="domain" value="Symantec.SES"/>
+        <FIELD name="eventclass_id" value="2101000"/>
+        <FIELD name="network_protocol" value="unknown"/>
+        <FIELD name="product_version" value="4.6"/>
+        <FIELD name="end_event_dt" value="Sun Dec 06 16:37:50 MSK 2009"/>
+        <FIELD name="severity" value="2"/>
+        <FIELD name="machine" value="linuxsima32"/>
+        <FIELD name="target_resource" value="statsvc"/>
+        <FIELD name="org_unit" value="ou=Default"/>
+        <FIELD name="network_traffic_direction" value="517101"/>
+        <FIELD name="os_version" value="2.6.9-78.0.13.ELhugememsym"/>
+        <FIELD name="source_host_name" value="linuxsima32"/>
+        <FIELD name="user_name" value="sesuser"/>
+        <FIELD name="os_name" value="Linux"/>
+        <FIELD name="event_dt" value="Sun Dec 06 16:37:50 MSK 2009"/>
+        <FIELD name="raw_event" value="2009-12-06 16:37:50,218 [RXWorkerThread-pool-1-thread-2] WARN  com.symantec.sim.rx.RXTcpService  - ConcurrentModificationException: com.symantec.sim.rx.RXMethodResult@10574f8"/>
+        <FIELD name="vendor_device_id" value="64"/>
+    </EVENT>
+    <EVENT event_dt="Sun Dec 06 16:42:10 MSK 2009" guid="6077:20091206164210:18000" log_dt="Sun Dec 06 16:42:10 MSK 2009">
+        <FIELD name="create_dt" value="Sun Dec 06 16:42:10 MSK 2009"/>
+        <FIELD name="product_id" value="3007"/>
+        <FIELD name="event_desc" value="ConcurrentModificationException: com.symantec.sim.statistics.StatisticsEvent@102c279"/>
+        <FIELD name="event_guid" value="6077:20091206164210:18000"/>
+        <FIELD name="option2_type" value="Line Number"/>
+        <FIELD name="logged_dt" value="Sun Dec 06 16:42:10 MSK 2009"/>
+        <FIELD name="option1_type" value="File Name"/>
+        <FIELD name="event_id" value="2102006"/>
+        <FIELD name="option4_type" value="Method Name"/>
+        <FIELD name="vendor_code" value="2102006"/>
+        <FIELD name="option1" value="RXTcpService.java"/>
+        <FIELD name="option2" value="836"/>
+        <FIELD name="option3" value="com.symantec.sim.rx.RXTcpService$WorkerTask"/>
+        <FIELD name="machine_ip" value="169.254.13.232"/>
+        <FIELD name="event_ct" value="1"/>
+        <FIELD name="option4" value="writeObject"/>
+        <FIELD name="source_ip" value="169.254.13.232"/>
+        <FIELD name="option3_type" value="Class Name"/>
+        <FIELD name="domain" value="Symantec.SES"/>
+        <FIELD name="eventclass_id" value="2101000"/>
+        <FIELD name="network_protocol" value="unknown"/>
+        <FIELD name="product_version" value="4.6"/>
+        <FIELD name="end_event_dt" value="Sun Dec 06 16:42:10 MSK 2009"/>
+        <FIELD name="severity" value="2"/>
+        <FIELD name="machine" value="linuxsima32"/>
+        <FIELD name="target_resource" value="statsvc"/>
+        <FIELD name="org_unit" value="ou=Default"/>
+        <FIELD name="network_traffic_direction" value="517101"/>
+        <FIELD name="os_version" value="2.6.9-78.0.13.ELhugememsym"/>
+        <FIELD name="source_host_name" value="linuxsima32"/>
+        <FIELD name="user_name" value="sesuser"/>
+        <FIELD name="os_name" value="Linux"/>
+        <FIELD name="event_dt" value="Sun Dec 06 16:42:10 MSK 2009"/>
+        <FIELD name="raw_event" value="2009-12-06 16:42:10,577 [RXWorkerThread-pool-1-thread-3] WARN  com.symantec.sim.rx.RXTcpService  - ConcurrentModificationException: com.symantec.sim.statistics.StatisticsEvent@102c279"/>
+        <FIELD name="vendor_device_id" value="64"/>
+    </EVENT>
+    <EVENT event_dt="Sun Dec 06 16:46:15 MSK 2009" guid="6077:20091206164615:20000" log_dt="Sun Dec 06 16:46:15 MSK 2009">
+        <FIELD name="create_dt" value="Sun Dec 06 16:46:15 MSK 2009"/>
+        <FIELD name="product_id" value="3007"/>
+        <FIELD name="event_desc" value="ConcurrentModificationException: com.symantec.sim.rx.RXMethodResult@14b8719"/>
+        <FIELD name="event_guid" value="6077:20091206164615:20000"/>
+        <FIELD name="option2_type" value="Line Number"/>
+        <FIELD name="logged_dt" value="Sun Dec 06 16:46:15 MSK 2009"/>
+        <FIELD name="option1_type" value="File Name"/>
+        <FIELD name="event_id" value="2102006"/>
+        <FIELD name="option4_type" value="Method Name"/>
+        <FIELD name="vendor_code" value="2102006"/>
+        <FIELD name="option1" value="RXTcpService.java"/>
+        <FIELD name="option2" value="836"/>
+        <FIELD name="option3" value="com.symantec.sim.rx.RXTcpService$WorkerTask"/>
+        <FIELD name="machine_ip" value="169.254.13.232"/>
+        <FIELD name="event_ct" value="1"/>
+        <FIELD name="option4" value="writeObject"/>
+        <FIELD name="source_ip" value="169.254.13.232"/>
+        <FIELD name="option3_type" value="Class Name"/>
+        <FIELD name="domain" value="Symantec.SES"/>
+        <FIELD name="eventclass_id" value="2101000"/>
+        <FIELD name="network_protocol" value="unknown"/>
+        <FIELD name="product_version" value="4.6"/>
+        <FIELD name="end_event_dt" value="Sun Dec 06 16:46:15 MSK 2009"/>
+        <FIELD name="severity" value="2"/>
+        <FIELD name="machine" value="linuxsima32"/>
+        <FIELD name="target_resource" value="statsvc"/>
+        <FIELD name="org_unit" value="ou=Default"/>
+        <FIELD name="network_traffic_direction" value="517101"/>
+        <FIELD name="os_version" value="2.6.9-78.0.13.ELhugememsym"/>
+        <FIELD name="source_host_name" value="linuxsima32"/>
+        <FIELD name="user_name" value="sesuser"/>
+        <FIELD name="os_name" value="Linux"/>
+        <FIELD name="event_dt" value="Sun Dec 06 16:46:15 MSK 2009"/>
+        <FIELD name="raw_event" value="2009-12-06 16:46:15,928 [RXWorkerThread-pool-1-thread-3] WARN  com.symantec.sim.rx.RXTcpService  - ConcurrentModificationException: com.symantec.sim.rx.RXMethodResult@14b8719"/>
+        <FIELD name="vendor_device_id" value="64"/>
+    </EVENT>
+    <EVENT event_dt="Sun Dec 06 16:48:17 MSK 2009" guid="2267:20091206164817:5e8000" log_dt="Sun Dec 06 16:48:17 MSK 2009">
+        <FIELD name="resources" value="11"/>
+        <FIELD name="vendor_severity" value="high"/>
+        <FIELD name="destination_ip" value="192.1.1.2"/>
+        <FIELD name="create_dt" value="Sun Dec 06 16:59:32 MSK 2009"/>
+        <FIELD name="intrusion_target_type_id" value="1037123"/>
+        <FIELD name="product_id" value="3446"/>
+        <FIELD name="option10_type" value="EventType"/>
+        <FIELD name="event_guid" value="2267:20091206164817:5e8000"/>
+        <FIELD name="swfeature_id" value="34460101"/>
+        <FIELD name="option2_type" value="Application Name"/>
+        <FIELD name="proxy_machine_ip" value="169.254.13.112"/>
+        <FIELD name="intrusion_outcome_id" value="1027202"/>
+        <FIELD name="option1_type" value="Sensor_ID"/>
+        <FIELD name="vuln_bid_list" value="8968"/>
+        <FIELD name="logging_device_name" value="tdadaev.bq.local"/>
+        <FIELD name="option4_type" value="SubSigID"/>
+        <FIELD name="option5_type" value="SigVersion"/>
+        <FIELD name="option1" value="sensor6"/>
+        <FIELD name="option2" value="sensorApp"/>
+        <FIELD name="option6_type" value="SigDetails"/>
+        <FIELD name="event_code" value="38937"/>
+        <FIELD name="option3" value="368"/>
+        <FIELD name="event_ct" value="1"/>
+        <FIELD name="option4" value="0"/>
+        <FIELD name="vuln_bugtraq_id" value="8968"/>
+        <FIELD name="destination_num_ip" value="-1073676030"/>
+        <FIELD name="proxy_machine_num_ip" value="-1442968208"/>
+        <FIELD name="symc_vendor_sig_id" value="38792"/>
+        <FIELD name="network_protocol" value="tcp"/>
+        <FIELD name="product_version" value="4.4"/>
+        <FIELD name="destination_host_name" value="192.1.1.2"/>
+        <FIELD name="category_id" value="30007606"/>
+        <FIELD name="effects" value="04"/>
+        <FIELD name="logging_device_ip" value="169.254.13.112"/>
+        <FIELD name="machine" value="tdadaev.bq.local"/>
+        <FIELD name="option8" value="90"/>
+        <FIELD name="option7" value="Penetrate/BufferOverflow/Misc"/>
+        <FIELD name="target_resource" value="192.1.1.2"/>
+        <FIELD name="org_unit" value="ou=Default"/>
+        <FIELD name="option6" value="\x90\x90\x90..."/>
+        <FIELD name="network_traffic_direction" value="517103"/>
+        <FIELD name="option5" value="S63"/>
+        <FIELD name="user_name" value="system"/>
+        <FIELD name="logging_device_num_ip" value="-1442968208"/>
+        <FIELD name="source_host_name" value="192.1.1.1"/>
+        <FIELD name="intrusion_vendor_sig" value="1203546463395386188"/>
+        <FIELD name="home_domain" value="Symantec.SES"/>
+        <FIELD name="raw_event" value=""/>
+        <FIELD name="reporting_sensor" value="Sensor 0"/>
+        <FIELD name="option8_type" value="threatRatingValue"/>
+        <FIELD name="mechanisms" value="06"/>
+        <FIELD name="intrusion_action_id" value="1037202"/>
+        <FIELD name="event_desc" value="LPD NoOp Sled"/>
+        <FIELD name="machine_mac" value="00-16-76-50-3F-57"/>
+        <FIELD name="logged_dt" value="Sun Dec 06 16:48:17 MSK 2009"/>
+        <FIELD name="source_port" value="34840"/>
+        <FIELD name="event_id" value="1042000"/>
+        <FIELD name="intrusion_vendor_name" value="Cisco"/>
+        <FIELD name="machine_subnet" value="169.254.13.0"/>
+        <FIELD name="vendor_code" value="6211-0"/>
+        <FIELD name="machine_ip" value="169.254.13.112"/>
+        <FIELD name="intrusion_intent_id" value="1027102"/>
+        <FIELD name="source_ip" value="192.1.1.1"/>
+        <FIELD name="option3_type" value="Application Instance ID"/>
+        <FIELD name="machineid" value="a9fe0de8c80fbc3d122d0c98a4201005"/>
+        <FIELD name="source_num_ip" value="-1073676031"/>
+        <FIELD name="destination_port" value="515"/>
+        <FIELD name="host_os" value="linux"/>
+        <FIELD name="domain" value="Symantec.SES"/>
+        <FIELD name="eventclass_id" value="1041000"/>
+        <FIELD name="option10" value="evIdsAlert"/>
+        <FIELD name="machine_num_ip" value="-1442968208"/>
+        <FIELD name="end_event_dt" value="Sun Dec 06 16:09:02 MSK 2009"/>
+        <FIELD name="proxy_machine" value="tdadaev.bq.local"/>
+        <FIELD name="network_protocol_id" value="167102"/>
+        <FIELD name="severity" value="4"/>
+        <FIELD name="event_dt" value="Sun Dec 06 16:09:02 MSK 2009"/>
+        <FIELD name="intrusion_vlan" value="0"/>
+        <FIELD name="option7_type" value="marsCategory"/>
+        <FIELD name="vendor_device_id" value="4"/>
+        <FIELD name="intrusion_data_base64" value="QkLs8/+/7fP/v+7z/7/v8/+/WFhYWFhYWFhYWFhYWFhYWFhYJS4xNzJ1JTMw&#10;MCRuc2VjdXIlMzAxJG5zZWN1cml0eSUzMDIkbiUuMTkydSUzMDMkbpCQkJCQ&#10;kJCQkJCQkJCQkJCQkJCQkJCQkA=="/>
+        <FIELD name="intrusion_data" value="BBìóÿ¿íóÿ¿îóÿ¿ïóÿ¿XXXXXXXXXXXXXXXXXX%.172u%300$nsecur%301$nsecurity%302$n%.192u%303$n������������������������"/>
+    </EVENT>
+    <EVENT event_dt="Sun Dec 06 16:48:17 MSK 2009" guid="2267:20091206164817:5e8001" log_dt="Sun Dec 06 16:48:17 MSK 2009">
+        <FIELD name="resources" value="07,31,34"/>
+        <FIELD name="vendor_severity" value="high"/>
+        <FIELD name="destination_ip" value="192.1.1.2"/>
+        <FIELD name="create_dt" value="Sun Dec 06 16:59:32 MSK 2009"/>
+        <FIELD name="intrusion_target_type_id" value="1037123"/>
+        <FIELD name="product_id" value="3446"/>
+        <FIELD name="option10_type" value="EventType"/>
+        <FIELD name="event_guid" value="2267:20091206164817:5e8001"/>
+        <FIELD name="swfeature_id" value="34460101"/>
+        <FIELD name="option2_type" value="Application Name"/>
+        <FIELD name="proxy_machine_ip" value="169.254.13.112"/>
+        <FIELD name="intrusion_outcome_id" value="1027202"/>
+        <FIELD name="option1_type" value="Sensor_ID"/>
+        <FIELD name="vuln_bid_list" value="1711,1712"/>
+        <FIELD name="logging_device_name" value="tdadaev.bq.local"/>
+        <FIELD name="option4_type" value="SubSigID"/>
+        <FIELD name="option5_type" value="SigVersion"/>
+        <FIELD name="option1" value="sensor6"/>
+        <FIELD name="option2" value="sensorApp"/>
+        <FIELD name="event_code" value="1776"/>
+        <FIELD name="option3" value="368"/>
+        <FIELD name="event_ct" value="1"/>
+        <FIELD name="option4" value="0"/>
+        <FIELD name="vuln_bugtraq_id" value="1711"/>
+        <FIELD name="destination_num_ip" value="-1073676030"/>
+        <FIELD name="proxy_machine_num_ip" value="-1442968208"/>
+        <FIELD name="symc_vendor_sig_id" value="29285"/>
+        <FIELD name="network_protocol" value="tcp"/>
+        <FIELD name="product_version" value="4.4"/>
+        <FIELD name="destination_host_name" value="192.1.1.2"/>
+        <FIELD name="category_id" value="30007606"/>
+        <FIELD name="effects" value="04,05"/>
+        <FIELD name="logging_device_ip" value="169.254.13.112"/>
+        <FIELD name="machine" value="tdadaev.bq.local"/>
+        <FIELD name="option8" value="100"/>
+        <FIELD name="option7" value="Penetrate/BufferOverflow/Misc"/>
+        <FIELD name="target_resource" value="192.1.1.2"/>
+        <FIELD name="org_unit" value="ou=Default"/>
+        <FIELD name="network_traffic_direction" value="517103"/>
+        <FIELD name="option5" value="S249"/>
+        <FIELD name="user_name" value="system"/>
+        <FIELD name="logging_device_num_ip" value="-1442968208"/>
+        <FIELD name="source_host_name" value="192.1.1.1"/>
+        <FIELD name="intrusion_vendor_sig" value="1203546463395386189"/>
+        <FIELD name="home_domain" value="Symantec.SES"/>
+        <FIELD name="raw_event" value=""/>
+        <FIELD name="reporting_sensor" value="Sensor 0"/>
+        <FIELD name="option8_type" value="threatRatingValue"/>
+        <FIELD name="mechanisms" value="24"/>
+        <FIELD name="intrusion_action_id" value="1037217"/>
+        <FIELD name="event_desc" value="LPR Format String Overflow"/>
+        <FIELD name="machine_mac" value="00-16-76-50-3F-57"/>
+        <FIELD name="logged_dt" value="Sun Dec 06 16:48:17 MSK 2009"/>
+        <FIELD name="source_port" value="34840"/>
+        <FIELD name="event_id" value="1042000"/>
+        <FIELD name="intrusion_vendor_name" value="Cisco"/>
+        <FIELD name="machine_subnet" value="169.254.13.0"/>
+        <FIELD name="vendor_code" value="6210-0"/>
+        <FIELD name="machine_ip" value="169.254.13.112"/>
+        <FIELD name="intrusion_intent_id" value="1027102"/>
+        <FIELD name="source_ip" value="192.1.1.1"/>
+        <FIELD name="option3_type" value="Application Instance ID"/>
+        <FIELD name="machineid" value="a9fe0de8c80fbc3d122d0c98a4201005"/>
+        <FIELD name="source_num_ip" value="-1073676031"/>
+        <FIELD name="destination_port" value="515"/>
+        <FIELD name="host_os" value="linux"/>
+        <FIELD name="domain" value="Symantec.SES"/>
+        <FIELD name="eventclass_id" value="1041000"/>
+        <FIELD name="option10" value="evIdsAlert"/>
+        <FIELD name="machine_num_ip" value="-1442968208"/>
+        <FIELD name="end_event_dt" value="Sun Dec 06 16:09:02 MSK 2009"/>
+        <FIELD name="proxy_machine" value="tdadaev.bq.local"/>
+        <FIELD name="network_protocol_id" value="167102"/>
+        <FIELD name="severity" value="4"/>
+        <FIELD name="event_dt" value="Sun Dec 06 16:09:02 MSK 2009"/>
+        <FIELD name="intrusion_vlan" value="0"/>
+        <FIELD name="option7_type" value="marsCategory"/>
+        <FIELD name="vendor_device_id" value="4"/>
+        <FIELD name="intrusion_data_base64" value="kJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQ&#10;kJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQ&#10;kJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQMdsxyTHAsEbNgInlMdKyZonQ&#10;McmJy0OJXfhDiV30S4lN/I1N9M2AMcmJRfRDZold7GbHRe4PJ4lN8I1F7IlF&#10;+MZF/BCJ0I1N9M2AidBDQ82AidBDzYCJwzHJsj+J0M2AidBBzYDrGF6JdQgx&#10;wIhGB4lFDLALifONTQiNVQzNgOjj////L2Jpbi9zaA=="/>
+        <FIELD name="intrusion_data" value="���������������������������������������������������������������������������������������������������������������������1Û1É1À°FÍ€‰å1Ò²f‰Ð1É‰ËC‰]øC‰]ôK‰Mü�MôÍ€1É‰EôCf‰]ìfÇEî'‰Mð�Eì‰EøÆEü‰Ð�MôÍ€‰ÐCCÍ€‰ÐCÍ€‰Ã1É²?‰ÐÍ€‰ÐAÍ€ë^‰u1ÀˆF‰E°‰ó�M�UÍ€èãÿÿÿ/bin/sh"/>
+    </EVENT>
+</EVENTS>

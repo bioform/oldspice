@@ -68,9 +68,31 @@
             }
             obj.progressbar('option', 'value', val);
             if( obj.css('display') != 'none' ){
-                setTimeout(startProgress, 100, obj, val+3);
+                val = val+3;
+                setTimeout('startProgress($(\'#' + obj.attr('id') + '\'),' + val + ')', 100);
             }
         }
+
+        //select Archive dialog script
+        $(function() {
+		$("#select_archive_dialog").dialog({
+                        autoOpen: false,
+			bgiframe: true,
+			modal: false,
+                        draggable: true,
+			buttons: {
+				Ok: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+	});
+
+        $().ready(function(){
+            $("#select_archive").click(function(){
+                $('#select_archive_dialog').dialog('open');
+            })
+        });
     </script>
 
     <title>SSIM Events</title>
@@ -81,18 +103,35 @@
     </div>
     <form id="event_list_form" action="/ssim/events/{{ address }}/events" method="post">
         <input type="hidden" name="filter" value="filter" />
+        <input type="hidden" name="archive_id" id="archive_id" value="" />
+
         {% include 'ssim/events/slide_panel.html' %}
 
         <div id="header" class="fg-toolbar ui-widget-header ui-helper-clearfix">
             {% block header %}
             <div class="fg-buttonset ui-helper-clearfix">
-                    <button id="refresh_events" type="submit"
-                             class="fg-button ui-state-default fg-button-icon-solo ui-corner-all"><span class="ui-icon ui-icon-refresh"></span> Refresh</button>
+                <button id="refresh_events" type="submit"
+                        class="fg-button ui-state-default fg-button-icon-solo ui-corner-all" title="Refresh list"><span class="ui-icon ui-icon-refresh"></span> Refresh</button>
+                <button id="select_archive" type="button"
+                        class="fg-button ui-state-default fg-button-icon-solo ui-corner-all" title="Select archive for qury"><span class="ui-icon ui-icon-suitcase"></span> Select archive</button>
                 <input name="obj_per_page" type="text" size="3" title="Objects per page" value="{{ obj_per_page }}"/>
             </div>
             {% endblock %}
         </div>
+
+
     </form>
+
+    <div id="select_archive_dialog" title="Select Archives" style="display:none;">
+        <p>
+                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                Select archives for query.
+        </p>
+        <p id="archive_list">
+                Loading...
+        </p>
+    </div>
+
 
     <div id="mainSplitter">
         <div id="mainmenu">
@@ -102,7 +141,7 @@
         </div>
         <div id="content">
             {% block content %}
-                Loading...
+                
             {% endblock %}
         </div>
     </div>
@@ -158,12 +197,14 @@
   <script>
         function update_event_stats(url, id){
             load_data(url, id);
-            setTimeout(update_event_stats, 5000, url, id);
+            setTimeout('update_event_stats("' + url + '","'+id+'")', 5000);
         }
         $(document).ready(function() {
                 load_data('/ssim/events/{{ address }}/queries', '#mainmenu');
-                load_data('/ssim/events/{{ address }}/events', '#content');
-                setTimeout(update_event_stats, 3000, '/ssim/events/{{ address }}/event_stats', '#event_stats_chart');
+                //load_data('/ssim/events/{{ address }}/events', '#content');
+                load_data('/ssim/events/{{ address }}/select-archive', '#archive_list');
+                //load_data('/ssim/events/{{ address }}/event_stats', '#event_stats_chart');
+                setTimeout('update_event_stats("/ssim/events/{{ address }}/event_stats","#event_stats_chart")', 3000);
         });
 
         $('a.link_for_mainmenu').click(function(event){

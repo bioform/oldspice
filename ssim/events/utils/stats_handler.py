@@ -13,7 +13,8 @@ class Stats:
         self.count = attributes['count']
         self.rate = attributes['rate']
         self.counter = attributes['name']
-        self.rate_history = attributes['rate_history'].split(',')
+        self.rate_history = [int(val) for val in attributes['rate_history'].split(',')]
+
 
 class EventHandler(xml.sax.handler.ContentHandler):
   def __init__(self, counter = 'Received Events'):

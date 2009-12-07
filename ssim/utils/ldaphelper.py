@@ -234,11 +234,11 @@ class LDAPSearchResult:
 
         pretty_print()->string
         """
-        str = "DN: " + self.dn + "n"
+        str = "DN: " + self.dn + "\n"
         for a, v_list in self.attrs.iteritems():
-            str = str + "Name: " + a + "n"
+            str = str + "Name: " + a + "\n"
             for v in v_list:
-                str = str + "  Value: " + v + "n"
+                str = str + "  Value: " + v + "\n"
         str = str + "========"
         return str
 

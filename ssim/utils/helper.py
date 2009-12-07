@@ -199,7 +199,7 @@ def webapi_get(session, address, path, params = None, method = "POST", redirect 
     if not params:
         params = {}
     else:
-        params = urllib.urlencode(params)
+        params = urllib.urlencode(params, True)
 
     print "Send WebAPI request to SSIM", address
 

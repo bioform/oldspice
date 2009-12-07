@@ -32,6 +32,7 @@
 
 <script>
     $('#data_list tbody tr').dblclick(function(){
-        window.open( '/ssim/events/{{ address }}/event/' + $(this).attr('guid'), null, "width=500,height=600,menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=1" );
+        var win = $(this).attr('guid').replace(/:/g,"_");
+        window.open( '/ssim/events/{{ address }}/event/' + $(this).attr('guid'), win, "width=500,height=600,menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=1" );
     });
 </script>

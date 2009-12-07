@@ -106,7 +106,8 @@
 
         $('#events').click(function(event){
             event.preventDefault();
-            window.open( $(this).attr('href'), null, "width=950,height=600,menubar=no,toolbar=no,location=no,resizable=yes" );
+            var win = $(this).attr('href').replace(/[/:.]/g,"_");
+            window.open( $(this).attr('href'), win, "width=950,height=600,menubar=no,toolbar=no,location=no,resizable=yes" );
             return false;
         });
   </script>
