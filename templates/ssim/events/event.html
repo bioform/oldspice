@@ -1,16 +1,24 @@
 {% load ssim_extras %}
 <html>
     <head>
-
+        <title>Event Details</title>
     </head>
-    <body>
-        <table id="data_list" border="1" summary="Event Table" style="border-collapse:collapse;border-color:rgb(240,240,240);">
-            {% for key in event.fields %}
-            <tr>
-                <th>{{ key }}</th>
-                <td>{{ event.fields|get:key }}</td>
-            </tr>
-            {% endfor %}
+    <body style="margin:0;padding:0;">
+        <table id="data_list" border="1" summary="Event Table" style="border-collapse:collapse;border-color:rgb(240,240,240);width:100%;">
+            <thead style="background-color:rgb(230,230,230)">
+                <tr>
+                    <th>Field Name</th>
+                    <th>Field Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key in event.fields %}
+                <tr>
+                    <th align="left" style="background-color:rgb(250,250,190)">{{ key }}</th>
+                    <td>{{ event.fields|get:key }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </body>
 </html>

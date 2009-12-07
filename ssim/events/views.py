@@ -95,7 +95,7 @@ def get_events(request, address):
 
     handler = events_handler.EventHandler()
     xml.sax.parseString(data, handler)
-    print "==========>", obj_per_page
+    
     return render_to_response('ssim/events/list.html', {
             'address':address,
             'events': handler.events,
