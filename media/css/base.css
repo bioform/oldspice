@@ -527,7 +527,7 @@ div.system-message p.system-message-title {
 /* BREADCRUMBS */
 
 div.breadcrumbs {
-    background: white url(../img/admin/nav-bg-reverse.gif) 0 -10px repeat-x;
+    background: white url(../../img/admin/nav-bg-reverse.gif) 0 -10px repeat-x;
     padding: 2px 8px 3px 8px;
     font-size: 11px;
     color: #999;
@@ -540,17 +540,17 @@ div.breadcrumbs {
 
 .addlink {
     padding-left: 12px;
-    background: url(../img/admin/icon_addlink.gif) 0 .2em no-repeat;
+    background: url(../../img/admin/icon_addlink.gif) 0 .2em no-repeat;
 }
 
 .changelink {
     padding-left: 12px;
-    background: url(../img/admin/icon_changelink.gif) 0 .2em no-repeat;
+    background: url(../../img/admin/icon_changelink.gif) 0 .2em no-repeat;
 }
 
 .deletelink {
     padding-left: 12px;
-    background: url(../img/admin/icon_deletelink.gif) 0 .25em no-repeat;
+    background: url(../../img/admin/icon_deletelink.gif) 0 .25em no-repeat;
 }
 
 a.deletelink:link, a.deletelink:visited {
@@ -585,14 +585,14 @@ a.deletelink:hover {
 .object-tools li {
     display: block;
     float: left;
-    background: url(../img/admin/tool-left.gif) 0 0 no-repeat;
+    background: url(../../img/admin/tool-left.gif) 0 0 no-repeat;
     padding: 0 0 0 8px;
     margin-left: 2px;
     height: 16px;
 }
 
 .object-tools li:hover {
-    background: url(../img/admin/tool-left_over.gif) 0 0 no-repeat;
+    background: url(../../img/admin/tool-left_over.gif) 0 0 no-repeat;
 }
 
 .object-tools a:link, .object-tools a:visited {
@@ -601,29 +601,29 @@ a.deletelink:hover {
     color: white;
     padding: .1em 14px .1em 8px;
     height: 14px;
-    background: #999 url(../img/admin/tool-right.gif) 100% 0 no-repeat;
+    background: #999 url(../../img/admin/tool-right.gif) 100% 0 no-repeat;
 }
 
 .object-tools a:hover, .object-tools li:hover a {
-    background: #5b80b2 url(../img/admin/tool-right_over.gif) 100% 0 no-repeat;
+    background: #5b80b2 url(../../img/admin/tool-right_over.gif) 100% 0 no-repeat;
 }
 
 .object-tools a.viewsitelink, .object-tools a.golink {
-    background: #999 url(../img/admin/tooltag-arrowright.gif) top right no-repeat;
+    background: #999 url(./.../img/admin/tooltag-arrowright.gif) top right no-repeat;
     padding-right: 28px;
 }
 
 .object-tools a.viewsitelink:hover, .object-tools a.golink:hover {
-    background: #5b80b2 url(../img/admin/tooltag-arrowright_over.gif) top right no-repeat;
+    background: #5b80b2 url(../../img/admin/tooltag-arrowright_over.gif) top right no-repeat;
 }
 
 .object-tools a.addlink {
-    background: #999 url(../img/admin/tooltag-add.gif) top right no-repeat;
+    background: #999 url(../../img/admin/tooltag-add.gif) top right no-repeat;
     padding-right: 28px;
 }
 
 .object-tools a.addlink:hover {
-    background: #5b80b2 url(../img/admin/tooltag-add_over.gif) top right no-repeat;
+    background: #5b80b2 url(../../img/admin/tooltag-add_over.gif) top right no-repeat;
 }
 
 /* OBJECT HISTORY */

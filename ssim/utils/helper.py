@@ -1,5 +1,8 @@
 import urllib, urllib2, httplib, openanything
 import ldap
+import sys
+import ssl
+import traceback
 from django.conf import settings
 from datetime import datetime
 from symantec.ssim.exceptions import *
@@ -19,19 +22,17 @@ def get_auth_xml(address, login, password):
     #print "\n--------------------------\n",xml,"\n--------------------------\n"
 
     conn = httplib.HTTPSConnection(address, timeout=10)
-    try:
-        conn.putrequest("POST", "/sesa/servlet/Admin")
-        conn.putheader("Content-type", "text/xml; charset=UTF-8")
-        conn.putheader("Content-length", "%d" % len(xml))
-        conn.endheaders()
-        conn.send(xml)
-        r1 = conn.getresponse()
-        data1 = r1.read()
-        conn.close()
-    except Exception:
-        print "Unexpected error:", sys.exc_info()[0]
-        traceback.print_exc()
-        data1 = ""
+
+    data1 = ""
+    conn.putrequest("POST", "/sesa/servlet/Admin")
+    conn.putheader("Content-type", "text/xml; charset=UTF-8")
+    conn.putheader("Content-length", "%d" % len(xml))
+    conn.endheaders()
+    conn.send(xml)
+    r1 = conn.getresponse()
+    data1 = r1.read()
+    conn.close()
+
     if len(data1) != 0:
         return data1
     return ""
@@ -79,7 +80,11 @@ def clear_ldap_cache():
 
 def ldap_authenticate(session, address, login, password):
     # Serialize the result of the database retrieval to JSON and send an application/json response
-    xml = get_auth_xml(address,login,password);
+    try:
+        xml = get_auth_xml(address,login,password);
+    except Exception, err:
+        raise DefaultDomainException, "ERROR: %s" % err
+
     if len(xml) == 0:
         raise DefaultDomainException, "Illegal SSIM XML response. See log files."
     print "===>", xml

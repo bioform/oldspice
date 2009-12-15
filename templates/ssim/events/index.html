@@ -197,7 +197,7 @@
   <script>
         function update_event_stats(url, id){
             load_data(url, id);
-            setTimeout('update_event_stats("' + url + '","'+id+'")', 5000);
+            setTimeout('update_event_stats("' + url + '","'+id+'")', 4000);
         }
         $(document).ready(function() {
                 load_data('/ssim/events/{{ address }}/queries', '#mainmenu');
@@ -223,7 +223,7 @@
                 target: "#content",
                 beforeSubmit: showRequest, // функция, вызываемая перед передачей
                 success: showResponse, // функция, вызываемая при получении ответа
-                timeout: 3000 // тайм-аут
+                timeout: 30000 // тайм-аут
               };
 
               $('#event_list_form').submit(function() {

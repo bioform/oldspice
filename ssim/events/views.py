@@ -34,10 +34,10 @@ def index(request, address):
         mimetype="text/html")
 
 def get_event_stats(request, address):
-    params = {'cmd': 'STATISTICS', 'history': '', 'module': 'SIM'}
+    params = {'cmd': 'STATISTICS', 'history': '', 'module': 'Event Service'}
     status, content_type, headers, cookies, data = utils.webapi_get_with_login(request.session, address, '/imr/config/api.jsp', params)
     
-    handler = stats_handler.EventHandler()
+    handler = stats_handler.EventHandler(counter = 'Archives')
     xml.sax.parseString(data, handler)
 
     max_value = max(handler.stats.rate_history)
