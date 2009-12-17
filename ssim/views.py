@@ -21,8 +21,11 @@ LOGIN_FORM_KEY = 'this_is_the_login_form'
 root_path = None
 
 def index(request, address = None):
-    
-    ldap_connection = utils.get_ldap_connection(request.session, address)
+    ldap_connection = None
+    try:
+        ldap_connection = utils.get_ldap_connection(request.session, address)
+    except Exception, err:
+        log.info("Cannot connect to LDAP " + address + ". " + str(err))
     if ldap_connection == None:
         return redirect('symantec.ssim.views.login', address=address)
 

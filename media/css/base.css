@@ -775,4 +775,11 @@ table#change-history tbody th {
 .status_off {
     background: transparent url(../img/status_off.gif) center center no-repeat;
 }
-
+/*-----------------------------*/
+.auto_commit_field{
+    background:rgb(240,240,190) center right no-repeat;
+    padding-right: 16px;
+}
+.auto_commit_field.saving{
+    background:url(../img/saving.gif) center right no-repeat;
+}

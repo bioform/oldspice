@@ -29,6 +29,22 @@ def index(request):
     return object_list(request,queryset=machine_list, template_name='machines/index.html',
         paginate_by=20, page=page)
 
+def update_comment(request):
+    request_data = request.POST
+    if request.method == 'GET':
+        request_data = request.GET
+    try:
+        # Get a machine based on what the user provided
+        machine = Machine.objects.get(id=request_data.get('id'))
+        machine.comments = request_data.get('comment')
+        machine.save()
+    except Exception, err:
+        return HttpResponse('false',
+                        mimetype='text/plain')
+
+    return HttpResponse('true',
+                        mimetype='text/plain')
+
 def take(request):
     # Get a machine based on what the user provided
     machine = Machine.objects.get(id=request.GET.get('id'))

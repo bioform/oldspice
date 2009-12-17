@@ -14,13 +14,14 @@
             <th>{% anchor user__username User%}</th>
             <th>{% anchor location %}</th>
             <th>{% anchor os_name OS %}</th>
+            <th>{% anchor comments %}</th>
             <th>SSIM</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
         {% for item in object_list %}
-        <tr id="item_{{ item.id }}" class="{% cycle 'even' 'odd' %}">
+        <tr id="item_{{ item.id }}" address="{{item.address}}" class="{% cycle 'even' 'odd' %}">
             <td id="item_address_{{ item.id }}" class="{% if item|my:user %}my{% endif %}">
                 <a href="https://{{item.address}}/" target="_blank" title="SSIM Administration">{{item.address}}</a>
             </td>
@@ -34,6 +35,9 @@
             <td id="item_user_{{ item.id }}">{{item.user.first_name}} {{item.user.last_name}}</td>
             <td>{{ item.location }}</td>
             <td id="item_os_{{ item.id }}">{{ item.os_name }}</td>
+            <td id="item_comments_{{ item.id }}">
+                <input class="auto_commit_field" type="text" value="{{ item.comments }}" machine="{{ item.id }}" size="40"/>
+            </td>
             <td id="status_{{ item.id }}" class="status">&nbsp;</td>
             <td id="take_{{ item.id }}" onclick="take('{{ item.id }}')" class="{{ item|take:user }}" title="Take for myself">&nbsp;</td>
         </tr>
@@ -114,7 +118,30 @@ var load_version = function(machine_id){
 
 $('.ssim').click(function(event){
     event.preventDefault();
-    window.open( $(this).attr('href'), $(this).attr('href'), "width=800,height=600,menubar=no,toolbar=no,location=no" );
+    window.open( $(this).attr('href'), $(this).attr('href'), "width=950,height=600,menubar=no,toolbar=no,location=no" );
+    return false;
+});
+
+$('.auto_commit_field').change(function(event){
+    event.preventDefault();
+    $(this).addClass('saving');
+    var machine = $(this).attr('machine');
+    var comment = $(this).val();
+    // store value in data variable
+    var data = { id: machine, comment: comment };
+    $.ajaxSetup({ cache: false });
+    $.get("/machines/commenting/",data,
+        function(data){
+            var td = $('#item_comments_' + machine + " > input:first");
+            var tr = $('#item_' + machine);
+            td.removeClass('saving');
+            if( !eval(data) ){
+                alert('Cannot update comment for ' + tr.attr('address'));
+            }
+
+        }
+    );
+
     return false;
 });
 
